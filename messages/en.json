@@ -1,0 +1,167 @@
+{
+  "meta": {
+    "title": "Alusra Clinics | Dental & Dermatology Clinics in Hafr Al-Batin",
+    "description": "Dental and dermatology clinics that make you feel like a priority. Book now on WhatsApp to ask about our dentistry and dermatology services in Hafr Al-Batin."
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "dentistry": "Dentistry",
+    "dermatology": "Dermatology",
+    "doctors": "Our Doctors",
+    "offers": "Offers",
+    "about": "About",
+    "contact": "Contact",
+    "bookNow": "Book Now",
+    "viewAllServices": "View all services"
+  },
+  "hero": {
+    "eyebrow": "Welcome to Alusra Clinics",
+    "title": "Dental & dermatology clinics %highlight% It makes you feel like a priority %highlight%",
+    "subtitle": "A specialized medical team and modern technology, for a healthy smile and radiant skin.",
+    "ctaWhatsapp": "Book on WhatsApp",
+    "ctaCall": "Call now",
+    "ctaMaps": "Get Directions",
+    "statYears": "years of experience",
+    "statSpecialties": "medical specialty",
+    "statRating": "Google rating",
+    "statFree": "Free consultation",
+    "ratingReviews": "patient reviews on Google",
+    "followUs": "Follow us",
+    "scroll": "Scroll",
+     "seeServices": "Explore our services",
+    "seeOffers": "Explore our offers"
+  },
+  "trust": {
+    "title": "Trust built over 20 years of care",
+    "insurance": "Medical insurance accepted",
+    "sterile": "Fully sterilized tools",
+    "technology": "Latest global technology",
+    "specialists": "Certified specialist doctors",
+    "experience": "20+ years of experience",
+    "satisfaction": "Guest satisfaction first",
+    "freeConsult": "Free consultation"
+  },
+  "how": {
+    "eyebrow": "How booking works",
+    "title": "Three steps… and your appointment is set",
+    "subtitle": "A fast, easy WhatsApp booking system — no waiting, no hassle.",
+    "step1Title": "Choose a service",
+    "step1Desc": "Browse our dental & skin services and pick the right one.",
+    "step2Title": "Message us on WhatsApp",
+    "step2Desc": "Send us a message and our team will reply right away.",
+    "step3Title": "Get your appointment",
+    "step3Desc": "Pick a time that suits you and visit us at the clinic.",
+    "cta": "Start booking now"
+  },
+  "offers": {
+    "eyebrow": "Offers of the week",
+    "title": "Latest offers",
+    "subtitle": "Real offers and discounts for a limited time — don't miss out.",
+    "empty": "No offers right now — check back soon!",
+    "book": "Book this offer",
+    "bookCta": "Claim this offer",
+    "viewAll": "View all offers",
+    "validUntil": "Valid until"
+  },
+  "services": {
+    "eyebrow": "Our Services",
+    "title": "Comprehensive care for teeth & skin",
+    "subtitle": "Choose a specialty to browse all related services.",
+    "viewAll": "View all services",
+    "readMore": "Read more",
+    "book": "Book this service",
+    "dentistry": "Dentistry",
+    "dermatology": "Dermatology",
+    "allCategories": "All",
+    "resultsTitle": "Before & After",
+    "resultsAll": "View all results"
+  },
+  "beforeAfter": {
+    "eyebrow": "Results speak",
+    "title": "Before & After — see it yourself",
+    "subtitle": "Drag the slider left and right to compare results. This is the transformation we deliver to our patients.",
+    "before": "Before",
+    "after": "After",
+    "drag": "Drag to compare",
+    "teeth": "Teeth whitening",
+    "teethDesc": "Professional whitening results in a single visit.",
+    "skin": "Skin treatment",
+    "skinDesc": "Clearer, brighter skin with a plan tailored to you.",
+    "empty": "No results yet — add before/after cases from the admin panel.",
+    "note": "Images are illustrative. Results vary from case to case; your doctor will build a personalized treatment plan after a clinical exam."
+  },
+  "about": {
+    "eyebrow": "About Us",
+    "description": "Learn about Alusra Clinics in Hafr Al-Batin — over 20 years of specialized dental and dermatology care, with a certified medical team and modern technology."
+  },
+  "doctors": {
+    "eyebrow": "Our Medical Team",
+    "title": "Meet Our Doctors",
+    "subtitle": "A select team of dentistry and dermatology specialists.",
+    "viewAll": "View all doctors",
+    "book": "Book an appointment",
+    "empty": "Our doctors will be added here soon.",
+    "backToDoctors": "Back to doctors"
+  },
+  "reviews": {
+    "eyebrow": "What Patients Say",
+    "title": "Reviews from Google Maps",
+    "empty": "Coming soon — our patient reviews from Google Maps.",
+    "viewOnGoogle": "See all reviews on Google Maps",
+    "basedOn": "based on {count} reviews",
+    "liveFromGoogle": "Live from Google"
+  },
+  "contact": {
+    "eyebrow": "Get in Touch",
+    "title": "We're happy to help",
+    "description": "Contact Alusra Clinics in Hafr Al-Batin by phone, WhatsApp, or email, or get directions to the clinic on Google Maps.",
+    "address": "Address",
+    "phone": "Phone",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "goToMaps": "Get Directions",
+    "chatWhatsapp": "Chat on WhatsApp"
+  },
+  "footer": {
+    "about": "About Us",
+    "aboutText": "This website and the \"Alusra Clinics\" brand are owned by Wiqayat Alusra Medical Company, a Saudi company, CR No. 2511008308, Tax No. 300908565400003.",
+    "dentistry": "Dentistry",
+    "dermatology": "Dermatology",
+    "quickLinks": "Quick Links",
+    "followUs": "Follow Us",
+    "rights": "All rights reserved",
+    "madeFor": "Alusra Clinics"
+  },
+  "common": {
+    "whatsappFloat": "Chat with us on WhatsApp",
+    "backToTop": "Back to top",
+    "loading": "Loading...",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "sampleBadge": "Sample data",
+    "insuranceAccepted": "Medical insurance accepted",
+    "openDaily": "Open every day"
+  },
+  "faq": {
+    "eyebrow": "Common Questions",
+    "title": "Frequently Asked Questions",
+    "subtitle": "Quick, honest answers about booking and visits. Anything else? Message us on WhatsApp and we'll reply fast.",
+    "q1": "How do I book an appointment?",
+    "a1": "Choose the service, offer, or doctor you need on our website and tap the book button — it opens WhatsApp with a message already prepared for you. Our team replies quickly to confirm your appointment time.",
+    "q2": "Do you accept medical insurance?",
+    "a2": "Yes, we accept medical insurance. Message us on WhatsApp with your insurance provider so our team can confirm coverage for your treatment.",
+    "q3": "Is the first consultation free?",
+    "a3": "Yes, we offer a free consultation. You can ask about your condition and the recommended treatment plan before deciding to proceed.",
+    "q4": "When is the clinic open?",
+    "a4": "We're open every day. Send us a message on WhatsApp for the most up-to-date opening hours and to find a time that suits you.",
+    "q5": "Where is the clinic located?",
+    "a5": "We are located in Hafr Al-Batin, Saudi Arabia. Use the Get Directions button on our contact page to open our location in Google Maps.",
+    "cta": "Ask us on WhatsApp"
+  },
+  "language": {
+    "switchLabel": "Switch language",
+    "ar": "عربي",
+    "en": "English"
+  }
+}

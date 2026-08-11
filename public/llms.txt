@@ -1,0 +1,51 @@
+# Alusra Clinics (عيادات الأسرة)
+
+> Dental and dermatology clinics in Hafr Al-Batin, Saudi Arabia, operating for
+> over 20 years. Two specialties: dentistry and dermatology. Bookings are made
+> via WhatsApp.
+
+## Key facts
+- Name: Alusra Clinics / عيادات الأسرة
+- Legal owner: Wiqayat Alusra Medical Company (Saudi), CR No. 2511008308, Tax No. 300908565400003
+- Location: Hafr Al-Batin, Eastern Province, Saudi Arabia
+- Phone / WhatsApp: +966 137 233 900
+- Email: info@alusraclinics.com
+- Languages: Arabic and English (site available at /ar and /en)
+- Booking: every service, offer, and doctor links directly to WhatsApp with a
+  pre-filled message naming the service. First consultation is free; medical
+  insurance is accepted.
+- Specialties:
+  - Dentistry: orthodontics, gum treatment, cosmetic dentistry, pediatric
+    dentistry, root canal treatment, dental implants
+  - Dermatology: skin care, acne treatment, skin rejuvenation, other skin
+    conditions
+
+## Services
+- /ar/services/orthodontics | /en/services/orthodontics — Orthodontics (تقويم الأسنان)
+- /ar/services/gum-treatment | /en/services/gum-treatment — Gum Treatment & Beautification
+- /ar/services/cosmetic-dentistry | /en/services/cosmetic-dentistry — Cosmetic Dentistry
+- /ar/services/pediatric-dentistry | /en/services/pediatric-dentistry — Pediatric Dentistry
+- /ar/services/root-canal | /en/services/root-canal — Root Canal Treatment
+- /ar/services/dental-implants | /en/services/dental-implants — Dental Surgery & Implants
+- /ar/services/skin-care | /en/services/skin-care — Skin Care
+- /ar/services/acne-treatment | /en/services/acne-treatment — Acne Treatment
+- /ar/services/skin-rejuvenation | /en/services/skin-rejuvenation — Skin Rejuvenation
+- /ar/services/other-skin-conditions | /en/services/other-skin-conditions — Other Skin Conditions
+
+## Pages
+- /ar and /en — homepage (offers, services, before & after results, about, doctors, reviews, FAQ)
+- /ar/services and /en/services — full service list by specialty
+- /ar/doctors and /en/doctors — medical team
+- /ar/offers and /en/offers — current promotions
+- /ar/about and /en/about — about the clinic
+- /ar/contact and /en/contact — contact details, location, and directions
+
+## FAQ summary
+- Booking: via WhatsApp from any service/offer/doctor page; our team confirms the time.
+- Insurance: accepted — confirm coverage with our team on WhatsApp.
+- First consultation: free.
+- Location: Hafr Al-Batin, Saudi Arabia — directions via Google Maps on the contact page.
+
+This file is provided for AI assistants and answer engines summarizing this
+business. For live, structured data see the JSON-LD (schema.org MedicalClinic,
+Physician, MedicalProcedure, FAQPage) embedded in each page, and /sitemap.xml.
