@@ -2,11 +2,13 @@
 
 import { useRef, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { AlertTriangle, Loader2, Trash2 } from "lucide-react";
 import AdminDialog from "./AdminDialog";
 
 export default function ConfirmDialog({ open, onClose, title, message, action, id }) {
   const router = useRouter();
+  const t = useTranslations("admin");
   const [pending, startTransition] = useTransition();
   const deletingRef = useRef(false);
 
@@ -39,11 +41,11 @@ export default function ConfirmDialog({ open, onClose, title, message, action, i
       </div>
       <div className="mt-6 flex items-center justify-end gap-2 border-t border-brand-line pt-4">
         <button type="button" onClick={onClose} disabled={pending} className="admin-btn-ghost">
-          إلغاء
+          {t("common.cancel")}
         </button>
         <button type="button" onClick={handleDelete} disabled={pending} className="admin-btn-danger">
           {pending ? <Loader2 size={15} className="animate-spin" /> : <Trash2 size={15} />}
-          {pending ? "جاري الحذف..." : "حذف نهائي"}
+          {pending ? t("common.deleting") : t("common.deleteForever")}
         </button>
       </div>
     </AdminDialog>

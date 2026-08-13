@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
-import { Menu, X, ChevronDown, Phone, Clock3, ShieldCheck } from "lucide-react";
+import { Menu, X, ChevronDown, Phone, Clock3 } from "lucide-react";
 import { FaInstagram, FaWhatsapp } from "react-icons/fa6";
-import LanguageSwitch from "./LanguageSwitch";
+import AdminLanguageToggle from "@/components/admin/AdminLanguageToggle";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
+import { getSocialLinks } from "@/lib/socials";
 
 function NavDropdown({ label, items, hrefBase, pathname }) {
   const [open, setOpen] = useState(false);
@@ -98,7 +99,10 @@ export default function Header({ settings, services }) {
     .map((s) => ({ slug: s.slug, name: locale === "ar" ? s.name_ar : s.name_en }));
 
   const clinicName = locale === "ar" ? settings?.clinic_name_ar : settings?.clinic_name_en;
-  const waLink = buildWhatsAppLink({ locale, kind: "general" });
+  const workingHours =
+    (locale === "ar" ? settings?.working_hours_ar : settings?.working_hours_en) || common("openDaily");
+  const socials = getSocialLinks(settings);
+  const waLink = buildWhatsAppLink({ locale, kind: "general", number: settings?.whatsapp_number });
 
   return (
     <>
@@ -113,17 +117,28 @@ export default function Header({ settings, services }) {
             <a href={`tel:${settings?.phone}`} className="flex items-center gap-1.5 font-semibold text-white/85 hover:text-brand-gold">
               <Phone size={13} /> {settings?.phone}
             </a>
-            <span className="flex items-center gap-1.5 text-white/60">
-              <ShieldCheck size={13} className="text-brand-gold" />
-              {common("insuranceAccepted")}
-            </span>
           </div>
           <div className="flex items-center gap-5">
+            {socials.length > 0 && (
+              <div className="flex items-center gap-2 border-e border-white/15 pe-5">
+                {socials.map(({ name, href, Icon }) => (
+                  <a
+                    key={name}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={name}
+                    className="text-white/60 transition hover:text-brand-gold"
+                  >
+                    <Icon size={13} />
+                  </a>
+                ))}
+              </div>
+            )}
             <span className="flex items-center gap-1.5 text-white/60">
               <Clock3 size={13} className="text-brand-gold" />
-              {common("openDaily")}
+              {workingHours}
             </span>
-
           </div>
         </div>
       </div>
@@ -160,7 +175,7 @@ export default function Header({ settings, services }) {
           </nav>
 
           <div className="flex items-center gap-3">
-            <LanguageSwitch />
+            <AdminLanguageToggle mode="url" />
        
             <button
               type="button"

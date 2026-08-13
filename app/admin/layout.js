@@ -1,4 +1,6 @@
 import { Cairo } from "next/font/google";
+import { NextIntlClientProvider } from "next-intl";
+import { getAdminLocale } from "@/lib/admin-locale-server";
 import "../globals.css";
 
 const cairo = Cairo({
@@ -8,19 +10,28 @@ const cairo = Cairo({
   display: "swap",
 });
 
-export const metadata = {
-  title: "لوحة تحكم عيادات الأسرة",
-  icons: {
-    icon: "/favicon.svg",
-  },
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata() {
+  const locale = await getAdminLocale();
+  return {
+    title:
+      locale === "ar" ? "لوحة تحكم عيادات الأسرة" : "Alusra Clinics Dashboard",
+    icons: {
+      icon: "/favicon.svg",
+    },
+    robots: { index: false, follow: false },
+  };
+}
 
-export default function AdminRootLayout({ children }) {
+export default async function AdminRootLayout({ children }) {
+  const locale = await getAdminLocale();
+  const messages = (await import(`@/messages/${locale}.json`)).default;
+
   return (
-    <html lang="ar" dir="rtl" className={cairo.variable}>
+    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} className={cairo.variable}>
       <body className="bg-brand-mist antialiased" style={{ fontFamily: "var(--font-cairo)" }}>
-        {children}
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          {children}
+        </NextIntlClientProvider>
       </body>
     </html>
   );

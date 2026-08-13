@@ -2,29 +2,15 @@
 
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import { Phone, Star, ShieldCheck, BadgeCheck, ArrowUpRight, ArrowLeft, Sparkles, ArrowRight } from "lucide-react";
-import { FaWhatsapp, FaInstagram, FaSnapchat,  } from "react-icons/fa6";
-import { buildWhatsAppLink } from "@/lib/whatsapp";
-
-function GoldStars() {
-  return (
-    <div className="flex gap-0.5 text-brand-gold">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Star key={i} size={15} fill="currentColor" strokeWidth={1} />
-      ))}
-    </div>
-  );
-}
+import { BadgeCheck, ArrowLeft, Sparkles, ArrowRight, Heart } from "lucide-react";
+import { getSocialLinks } from "@/lib/socials";
+import OfferSubscribeDialog from "@/components/OfferSubscribeDialog";
 
 export default function Hero({ settings }) {
   const t = useTranslations("hero");
   const locale = useLocale();
-  const waLink = buildWhatsAppLink({ locale, kind: "general" });
 
-  const socials = [
-    { name: "Instagram", href: settings?.instagram_url, Icon: FaInstagram },
-    { name: "Snapchat", href: settings?.snapchat_url, Icon: FaSnapchat },
-  ].filter((s) => s.href);
+  const socials = getSocialLinks(settings);
 
   const [before, highlight, after] = (t("title") || "").split("%highlight%");
 
@@ -78,21 +64,6 @@ export default function Hero({ settings }) {
             </a>
           </div>
 
-          {/* Trust chips */}
-          <div className="mt-10 flex flex-wrap gap-3">
-            <span className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold backdrop-blur-sm">
-              <Star size={15} className="text-brand-gold" fill="currentColor" />
-              4.6 · <span className="text-white/70">{t("statRating")}</span>
-            </span>
-            <span className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold backdrop-blur-sm">
-              <ShieldCheck size={15} className="text-brand-gold" />
-              {t("statFree")}
-            </span>
-            <span className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold backdrop-blur-sm">
-              <BadgeCheck size={15} className="text-brand-gold" />
-              20+ {t("statYears")}
-            </span>
-          </div>
 
           {/* Socials */}
           {socials.length > 0 && (
@@ -119,53 +90,19 @@ export default function Hero({ settings }) {
           )}
         </div>
 
-        {/* Booking card */}
-        <div data-reveal="bottom" className="revealed mx-auto w-full max-w-sm">
-          <div className="glass rounded-[1.75rem] p-7 shadow-[var(--shadow-lifted)]">
-            <div className="flex items-center gap-3">
-              <span className="icon-chip flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-brand text-white">
-                <Phone size={20} />
-              </span>
-              <div>
-
-                <p className="font-display text-lg font-semibold text-brand-ink">
-                  {locale === "ar" ? "احجز استشارتك الآن" : "Book your consultation"}
-                </p>
-                <p className="text-xs font-semibold text-brand-slate">
-                  {locale === "ar" ? "رد سريع خلال دقائق" : "Fast reply within minutes"}
-                </p>
-              </div>
-            </div>
-                <div className="flex items-center gap-1 mt-4">
-                          <a
-                href={waLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-whatsapp w-full"
-              >
-                <FaWhatsapp size={18} />
-                {t("ctaWhatsapp")}
-              </a>
-                </div>
-            <div className="mt-6 flex items-center justify-between gap-3 border-t border-brand-line pt-5">
-              <div>
-                <GoldStars />
-                <p className="mt-1 text-xs font-semibold text-brand-slate">
-                  4.6 · {locale === "ar" ? "تقييم جوجل" : "Google rating"}
-                </p>
-              </div>
-              {settings?.maps_url && (
-                <a
-                  href={settings.maps_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1 rounded-full bg-brand-teal px-4 py-2 text-xs font-bold text-white transition hover:bg-brand-teal-mid"
-                >
-                  {locale === "ar" ? "على الخريطة" : "On the map"}
-                  <ArrowUpRight size={14} />
-                </a>
-              )}
-            </div>
+        {/* Booking card + offer subscription */}
+        <div data-reveal="bottom" className="revealed mx-auto w-full max-w-sm space-y-5">
+          <div className="glass flex flex-col rounded-[1.75rem] p-7 text-center shadow-[var(--shadow-lifted)]">
+            <span className="mx-auto flex items-center gap-2 text-brand-gold">
+              <Sparkles size={15} />
+              <span className="text-[0.7rem] font-extrabold uppercase tracking-widest">{t("subscribeEyebrow")}</span>
+            </span>
+            <h3 className="mt-2 font-display text-xl font-bold text-brand-ink">{t("cardTitle")}</h3>
+            <p className="mt-1 text-sm leading-relaxed text-brand-slate">{t("cardText")}</p>
+            <OfferSubscribeDialog
+              autoOpen
+              buttonClassName="btn btn-gold mt-6 w-full"
+            />
           </div>
         </div>
       </div>

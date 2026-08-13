@@ -1,11 +1,10 @@
 import { getTranslations } from "next-intl/server";
-import { ShieldCheck, Sparkles, Stethoscope, Award, HeartHandshake, BadgeCheck } from "lucide-react";
+import { Sparkles, Stethoscope, Award, HeartHandshake, BadgeCheck } from "lucide-react";
 
 export default async function TrustStrip() {
   const t = await getTranslations("trust");
 
   const items = [
-    { icon: <ShieldCheck size={18} className="text-brand-gold" />, label: t("insurance") },
     { icon: <Sparkles size={18} className="text-brand-gold" />, label: t("sterile") },
     { icon: <Stethoscope size={18} className="text-brand-gold" />, label: t("technology") },
     { icon: <BadgeCheck size={18} className="text-brand-gold" />, label: t("specialists") },

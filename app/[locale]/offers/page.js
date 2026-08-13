@@ -1,16 +1,21 @@
 import { getTranslations, getLocale } from "next-intl/server";
 import PageHeader from "@/components/ui/PageHeader";
 import OfferCard from "@/components/ui/OfferCard";
+import OfferSubscribe from "@/components/OfferSubscribe";
+import OfferSubscribeDialog from "@/components/OfferSubscribeDialog";
 import { getOffers } from "@/lib/data";
-import { breadcrumbSchema, offerSchema, localizedAlternates, SITE_URL } from "@/lib/seo";
+import { breadcrumbSchema, offerSchema, localizedAlternates, pageOpenGraph, SITE_URL } from "@/lib/seo";
 
 export async function generateMetadata({ params }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "offers" });
+  const title = t("title");
+  const description = t("subtitle");
   return {
-    title: t("title"),
-    description: t("subtitle"),
+    title,
+    description,
     alternates: localizedAlternates("/offers", locale),
+    ...pageOpenGraph({ locale, title, description, path: "/offers" }),
   };
 }
 
@@ -35,7 +40,11 @@ export default async function OffersPage({ params }) {
         <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       ))}
 
-      <PageHeader eyebrow={t("eyebrow")} title={t("title")} />
+      <PageHeader
+        eyebrow={t("eyebrow")}
+        title={t("title")}
+        actions={<OfferSubscribeDialog buttonClassName="btn btn-primary" />}
+      />
 
       <section className="section-y">
         <div className="container-brand">
@@ -50,6 +59,10 @@ export default async function OffersPage({ params }) {
               {t("empty")}
             </div>
           )}
+
+          <div className="mx-auto mt-14 max-w-3xl">
+            <OfferSubscribe />
+          </div>
         </div>
       </section>
     </>

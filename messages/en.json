@@ -25,27 +25,29 @@
     "statYears": "years of experience",
     "statSpecialties": "medical specialty",
     "statRating": "Google rating",
-    "statFree": "Free consultation",
+    "statGuest": "Guest satisfaction first",
+    "statTech": "Latest global technology",
     "ratingReviews": "patient reviews on Google",
     "followUs": "Follow us",
     "scroll": "Scroll",
      "seeServices": "Explore our services",
-    "seeOffers": "Explore our offers"
+    "seeOffers": "Explore our offers",
+    "cardTitle": "Join our exclusive offers club",
+    "cardText": "Subscribe for free and get special offers and discounts on WhatsApp — for dentistry & skin care.",
+    "subscribeEyebrow": "Exclusive offers"
   },
   "trust": {
     "title": "Trust built over 20 years of care",
-    "insurance": "Medical insurance accepted",
     "sterile": "Fully sterilized tools",
     "technology": "Latest global technology",
     "specialists": "Certified specialist doctors",
     "experience": "20+ years of experience",
-    "satisfaction": "Guest satisfaction first",
-    "freeConsult": "Free consultation"
+    "satisfaction": "Guest satisfaction first"
   },
   "how": {
     "eyebrow": "How booking works",
     "title": "Three steps… and your appointment is set",
-    "subtitle": "A fast, easy WhatsApp booking system — no waiting, no hassle.",
+    "subtitle": "A fast, easy WhatsApp booking system.",
     "step1Title": "Choose a service",
     "step1Desc": "Browse our dental & skin services and pick the right one.",
     "step2Title": "Message us on WhatsApp",
@@ -63,6 +65,40 @@
     "bookCta": "Claim this offer",
     "viewAll": "View all offers",
     "validUntil": "Valid until"
+  },
+  "subscribe": {
+    "eyebrow": "Exclusive offers",
+    "title": "Subscribe to our offers",
+    "subtitle": "Leave your details and pick your areas of interest to receive a special offer on WhatsApp.",
+    "dialogTitle": "Unlock your exclusive offers",
+    "dialogSubtitle": "Join free in under 30 seconds and get new offers delivered to your WhatsApp.",
+    "perkGift": "Welcome gift",
+    "perkDiscount": "Member discounts",
+    "perkTrust": "No spam",
+    "skip": "No thanks, maybe later",
+    "nameLabel": "Full name",
+    "namePlaceholder": "Your full name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@email.com",
+    "phoneLabel": "Phone number",
+    "phonePlaceholder": "05xxxxxxxx",
+    "interestsLabel": "Areas of interest (choose 1 or 2)",
+    "interestDentistry": "Dentistry",
+    "interestDermatology": "Dermatology",
+    "submit": "Subscribe to offers",
+    "cta": "Subscribe to offers",
+    "close": "Close",
+    "again": "Add another subscription",
+    "successTitle": "You're subscribed!",
+    "successText": "Thank you — you'll receive our latest offers on WhatsApp.",
+    "consentLabel": "I agree to receive offer and promotional messages via WhatsApp.",
+    "privacy": "Your details are kept private and only used to send you offers.",
+    "error": {
+      "required": "Please enter your name and phone number.",
+      "consent": "Please agree to receive messages to continue.",
+      "interests": "Choose at least one area of interest (up to two).",
+      "generic": "Something went wrong — please try again."
+    }
   },
   "services": {
     "eyebrow": "Our Services",
@@ -93,7 +129,8 @@
   },
   "about": {
     "eyebrow": "About Us",
-    "description": "Learn about Alusra Clinics in Hafr Al-Batin — over 20 years of specialized dental and dermatology care, with a certified medical team and modern technology."
+    "description": "Learn about Alusra Clinics in Hafr Al-Batin — over 20 years of specialized dental and dermatology care, with a certified medical team and modern technology.",
+    "cta": "Book an appointment"
   },
   "doctors": {
     "eyebrow": "Our Medical Team",
@@ -106,7 +143,7 @@
   },
   "reviews": {
     "eyebrow": "What Patients Say",
-    "title": "Reviews from Google Maps",
+    "title": "Our Patients' Experiences & Reviews",
     "empty": "Coming soon — our patient reviews from Google Maps.",
     "viewOnGoogle": "See all reviews on Google Maps",
     "basedOn": "based on {count} reviews",
@@ -140,7 +177,6 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "sampleBadge": "Sample data",
-    "insuranceAccepted": "Medical insurance accepted",
     "openDaily": "Open every day"
   },
   "faq": {
@@ -149,19 +185,381 @@
     "subtitle": "Quick, honest answers about booking and visits. Anything else? Message us on WhatsApp and we'll reply fast.",
     "q1": "How do I book an appointment?",
     "a1": "Choose the service, offer, or doctor you need on our website and tap the book button — it opens WhatsApp with a message already prepared for you. Our team replies quickly to confirm your appointment time.",
-    "q2": "Do you accept medical insurance?",
-    "a2": "Yes, we accept medical insurance. Message us on WhatsApp with your insurance provider so our team can confirm coverage for your treatment.",
-    "q3": "Is the first consultation free?",
-    "a3": "Yes, we offer a free consultation. You can ask about your condition and the recommended treatment plan before deciding to proceed.",
-    "q4": "When is the clinic open?",
-    "a4": "We're open every day. Send us a message on WhatsApp for the most up-to-date opening hours and to find a time that suits you.",
-    "q5": "Where is the clinic located?",
-    "a5": "We are located in Hafr Al-Batin, Saudi Arabia. Use the Get Directions button on our contact page to open our location in Google Maps.",
+    "q2": "When is the clinic open?",
+    "a2": "We're open every day. Send us a message on WhatsApp for the most up-to-date opening hours and to find a time that suits you.",
+    "q3": "Where is the clinic located?",
+    "a3": "We are located in Hafr Al-Batin, Saudi Arabia. Use the Get Directions button on our contact page to open our location in Google Maps.",
     "cta": "Ask us on WhatsApp"
   },
   "language": {
     "switchLabel": "Switch language",
     "ar": "عربي",
     "en": "English"
+  },
+  "admin": {
+    "metaTitle": "Alusra Clinics Dashboard",
+    "layout": {
+      "header": "Alusra Clinics Dashboard",
+      "footer": "© {year} Alusra Clinics — Admin Panel",
+      "menu": "Main menu",
+      "logout": "Sign out",
+      "role": "Admin",
+      "brandAlt": "Alusra Clinics"
+    },
+    "login": {
+      "title": "Alusra Clinics Dashboard",
+      "subtitle": "Sign in to manage offers, services, doctors and results",
+      "email": "Email address",
+      "password": "Password",
+      "signIn": "Sign in",
+      "signingIn": "Signing in...",
+      "invalidCredentials": "Invalid login credentials. Check your email and password.",
+      "notConfigured": "Supabase is not connected yet. Add the connection details in your .env.local file first (see README).",
+      "protected": "Protected area — access is limited to the clinic management team."
+    },
+    "nav": {
+      "overview": "Overview",
+      "offers": "Offers",
+      "subscribers": "Offer subscribers",
+      "services": "Services",
+      "doctors": "Doctors",
+      "beforeAfter": "Before & After",
+      "faqs": "FAQ",
+      "settings": "Settings"
+    },
+    "dashboard": {
+      "eyebrow": "Dashboard",
+      "welcome": "Welcome back 👋",
+      "intro": "Manage all Alusra Clinics content in one place — offers, services, doctors and patient results.",
+      "addOffer": "Add offer",
+      "viewSite": "View site",
+      "statOffers": "Offers",
+      "statSubscribers": "Offer subscribers",
+      "statServices": "Services",
+      "statDoctors": "Doctors",
+      "statBeforeAfter": "Before & After",
+      "statFaqs": "FAQ",
+      "total": "/ {total} total",
+      "open": "Open",
+      "quickActions": "Quick actions",
+      "qaNewOffer": "New offer",
+      "qaSendOffer": "Send WhatsApp offer",
+      "qaNewService": "New service",
+      "qaAddDoctor": "Add doctor",
+      "qaBeforeAfter": "Before & After case",
+      "qaNewFaq": "New FAQ question",
+      "previewTitle": "Site preview",
+      "previewDesc": "See the site as visitors see it.",
+      "viewArabic": "View site in Arabic",
+      "viewEnglish": "View site in English",
+      "contentMgmt": "Content management",
+      "contentNote": "All changes are saved instantly and appear on the public site. Use the settings icon to edit the WhatsApp number and contact details.",
+      "configWarning": "Supabase is not configured yet — the dashboard shows sample data only. Add <urlKey>NEXT_PUBLIC_SUPABASE_URL</urlKey> and <anonKey>NEXT_PUBLIC_SUPABASE_ANON_KEY</anonKey> to the <envFile>.env.local</envFile> file to enable adding and editing."
+    },
+    "pages": {
+      "offers": {
+        "eyebrow": "Offers",
+        "title": "Manage offers",
+        "subtitle": "Add, edit and delete site offers."
+      },
+      "subscribers": {
+        "eyebrow": "Subscribers",
+        "title": "Offer subscribers",
+        "subtitle": "People who registered interest in your offers — send each one the offer via WhatsApp with a ready-made message, one at a time. Data also reaches Google Sheets."
+      },
+      "services": {
+        "eyebrow": "Services",
+        "title": "Manage services",
+        "subtitle": "Manage the dental and dermatology services shown on the site."
+      },
+      "doctors": {
+        "eyebrow": "Doctors",
+        "title": "Manage doctors",
+        "subtitle": "Manage the doctors team shown on the \"Our Doctors\" page."
+      },
+      "beforeAfter": {
+        "eyebrow": "Before & After",
+        "title": "Manage cases",
+        "subtitle": "Before & After cases shown in the results section."
+      },
+      "faqs": {
+        "eyebrow": "FAQ",
+        "title": "Manage questions",
+        "subtitle": "Questions and answers shown in the FAQ section on the home page."
+      },
+      "settings": {
+        "eyebrow": "Settings",
+        "title": "General settings",
+        "subtitle": "Contact details, booking WhatsApp number, social media links and the \"About us\" text."
+      }
+    },
+    "common": {
+      "close": "Close",
+      "cancel": "Cancel",
+      "save": "Save",
+      "saveChanges": "Save changes",
+      "deleting": "Deleting...",
+      "deleteForever": "Delete permanently",
+      "edit": "Edit",
+      "delete": "Delete",
+      "editLabel": "Edit {name}",
+      "deleteLabel": "Delete {name}",
+      "active": "Active",
+      "inactive": "Inactive",
+      "activeFem": "Active",
+      "inactiveFem": "Inactive",
+      "noResults": "No matching results",
+      "tryDifferent": "Try a different search term.",
+      "saveFailed": "Could not save: {message}",
+      "saveFailedGeneric": "Could not save. Check the Supabase connection and try again."
+    },
+    "image": {
+      "upload": "Upload image",
+      "uploading": "Uploading...",
+      "uploadError": "Could not upload the image. Make sure Supabase Storage is set up (bucket: media)."
+    },
+    "offers": {
+      "search": "Search offers...",
+      "add": "New offer",
+      "countLabel": "offer",
+      "validUntil": "Valid until {date}",
+      "emptyTitle": "No offers yet",
+      "emptyDesc": "Start by adding your first offer using the \"New offer\" button.",
+      "dialogCreateTitle": "New offer",
+      "dialogEditTitle": "Edit offer",
+      "dialogCreateSubtitle": "Add a new offer to show it on the site.",
+      "dialogEditSubtitle": "Update the offer details and save.",
+      "deleteTitle": "Delete offer",
+      "deleteMessage": "Are you sure you want to delete the offer \"{name}\"? This cannot be undone.",
+      "fields": {
+        "titleAr": "Title (Arabic)",
+        "titleEn": "Title (English)",
+        "descAr": "Description (Arabic)",
+        "descEn": "Description (English)",
+        "badgeAr": "Badge (Arabic)",
+        "badgeEn": "Badge (English)",
+        "badgeHint": "e.g. 20% off",
+        "validUntil": "Valid until (optional)",
+        "visibility": "Offer visibility",
+        "visible": "Active and visible on the site",
+        "image": "Offer image (optional)"
+      }
+    },
+    "doctors": {
+      "search": "Search doctors...",
+      "add": "Add doctor",
+      "countLabel": "doctor",
+      "emptyTitle": "No doctors yet",
+      "emptyDesc": "Start by adding your first doctor using the \"Add doctor\" button.",
+      "dialogCreateTitle": "Add doctor",
+      "dialogEditTitle": "Edit doctor",
+      "dialogCreateSubtitle": "Add a new doctor to show them on the \"Our Doctors\" page.",
+      "dialogEditSubtitle": "Update the doctor details and save.",
+      "deleteTitle": "Delete doctor",
+      "deleteMessage": "Are you sure you want to delete the doctor \"{name}\"? This cannot be undone.",
+      "fields": {
+        "photo": "Doctor photo",
+        "nameAr": "Name (Arabic)",
+        "nameEn": "Name (English)",
+        "specialtyAr": "Specialty (Arabic)",
+        "specialtyEn": "Specialty (English)",
+        "bioAr": "Bio (Arabic)",
+        "bioEn": "Bio (English)",
+        "sortOrder": "Display order",
+        "visibility": "Doctor visibility",
+        "visible": "Active and visible on the site"
+      }
+    },
+    "faqs": {
+      "search": "Search questions...",
+      "add": "New question",
+      "countLabel": "question",
+      "emptyTitle": "No questions yet",
+      "emptyDesc": "Start by adding your first question using the \"New question\" button.",
+      "dialogCreateTitle": "New question",
+      "dialogEditTitle": "Edit question",
+      "dialogCreateSubtitle": "Add a new common question.",
+      "dialogEditSubtitle": "Update the question and save.",
+      "deleteTitle": "Delete question",
+      "deleteMessage": "Are you sure you want to delete the question \"{name}\"? This cannot be undone.",
+      "fields": {
+        "questionAr": "Question (Arabic)",
+        "questionEn": "Question (English)",
+        "answerAr": "Answer (Arabic)",
+        "answerEn": "Answer (English)",
+        "sortOrder": "Display order",
+        "visibility": "Question visibility",
+        "visible": "Active and visible on the site"
+      }
+    },
+    "services": {
+      "search": "Search services...",
+      "add": "New service",
+      "countLabel": "service",
+      "emptyTitle": "No services yet",
+      "emptyDesc": "Start by adding your first service using the \"New service\" button.",
+      "dialogCreateTitle": "New service",
+      "dialogEditTitle": "Edit service",
+      "dialogCreateSubtitle": "Add a new service to show it on the site.",
+      "dialogEditSubtitle": "Update the service details and save.",
+      "deleteTitle": "Delete service",
+      "deleteMessage": "Are you sure you want to delete the service \"{name}\"? This cannot be undone.",
+      "categories": {
+        "dentistry": "Dentistry",
+        "dermatology": "Dermatology"
+      },
+      "fields": {
+        "nameAr": "Name (Arabic)",
+        "nameEn": "Name (English)",
+        "category": "Specialty",
+        "icon": "Icon",
+        "excerptAr": "Short excerpt (Arabic)",
+        "excerptEn": "Short excerpt (English)",
+        "fullDescAr": "Full description (Arabic)",
+        "fullDescEn": "Full description (English)",
+        "sortOrder": "Display order",
+        "visibility": "Service visibility",
+        "visible": "Active and visible on the site",
+        "image": "Service image (optional)"
+      }
+    },
+    "beforeAfter": {
+      "search": "Search cases...",
+      "add": "New case",
+      "countLabel": "case",
+      "emptyTitle": "No cases yet",
+      "emptyDesc": "Start by adding your first case using the \"New case\" button.",
+      "dialogCreateTitle": "New case",
+      "dialogEditTitle": "Edit case",
+      "dialogCreateSubtitle": "Add a new before & after case.",
+      "dialogEditSubtitle": "Update the case details and save.",
+      "deleteTitle": "Delete case",
+      "deleteMessage": "Are you sure you want to delete the case \"{name}\"? This cannot be undone.",
+      "serviceLabel": "Service: {name}",
+      "noService": "Not linked",
+      "imagesLabel": {
+        "both": "Before & after",
+        "before": "Before only",
+        "after": "After only",
+        "none": "No images"
+      },
+      "fields": {
+        "titleAr": "Title (Arabic)",
+        "titleEn": "Title (English)",
+        "descAr": "Description (Arabic)",
+        "descEn": "Description (English)",
+        "service": "Linked service",
+        "serviceHint": "If you link the case to a service, it also appears inside that service's page.",
+        "noLink": "— Not linked (shows on home page only) —",
+        "beforeImage": "Before image",
+        "afterImage": "After image",
+        "sortOrder": "Display order",
+        "visibility": "Case visibility",
+        "visible": "Active and visible on the site"
+      }
+    },
+    "subscribers": {
+      "search": "Search by name, phone or email...",
+      "countLabel": "subscriber",
+      "broadcastTitle": "Send an offer via WhatsApp",
+      "broadcastDesc": "Choose the offer, then press the WhatsApp button next to each subscriber to open a chat with a ready-made message. Or copy the links of all subscribers to paste into a WhatsApp broadcast.",
+      "offerLabel": "Offer to send",
+      "selectPlaceholder": "Choose an offer...",
+      "inactive": "(inactive)",
+      "messageLabel": "WhatsApp message (editable)",
+      "messageHint": "Country code 966 is added automatically when the number starts with 0.",
+      "copyAll": "Copy all subscriber links",
+      "copied": "Links copied!",
+      "noOffer": "Add an offer first so it appears here.",
+      "interests": {
+        "dentistry": "Dentistry",
+        "dermatology": "Dermatology"
+      },
+      "emptyTitle": "No subscribers yet",
+      "emptyDesc": "When visitors register through the subscription form (in the banner and offers page), their data appears here and also reaches Google Sheets.",
+      "waTitle": "Send the offer via WhatsApp",
+      "waLabel": "Send the offer to {name}",
+      "copyTitle": "Copy conversation link",
+      "deleteTitle": "Delete subscriber",
+      "deleteMessage": "Are you sure you want to delete the subscriber \"{name}\"? This cannot be undone.",
+      "message": {
+        "greeting": "Hello, Alusra Clinics has a special offer for you:",
+        "validUntil": "Valid until {date}",
+        "details": "For details and booking: {url}"
+      },
+      "oneByOneTitle": "Send one by one (WhatsApp)",
+      "oneByOneDesc": "Opens each subscriber's chat one at a time with the message pre-filled — send in each chat, then continue to the next.",
+      "sendAllOneByOne": "Start sending to {count} chats",
+      "nowSending": "Now sending to: {name}",
+      "progress": "{index} of {total}",
+      "openChat": "Open chat",
+      "next": "Next",
+      "doneBtn": "Done",
+      "finish": "Finish",
+      "queueDone": "Done — opened {count} chats.",
+      "queueStopped": "Stopped early — {count} chats opened."
+    },
+    "settings": {
+      "save": "Save settings",
+      "saving": "Saving…",
+      "saved": "Settings saved successfully.",
+      "saveHint": "Save the contact details, social links and About text above.",
+      "errors": {
+        "connect": "Could not connect to the database. Make sure Supabase is set up.",
+        "tableMissing": "The site_settings table does not exist yet — run supabase/schema.sql first.",
+        "saveFailed": "Could not save: {message}"
+      },
+      "sections": {
+        "clinic": {
+          "title": "Clinic details",
+          "hint": "Name, phone, WhatsApp and address."
+        },
+        "social": {
+          "title": "Social media & Google",
+          "hint": "Links to your external pages and Google identifier. Leave any link empty to hide it from the site."
+        },
+        "about": {
+          "title": "About the clinic",
+          "hint": "Shown on the home page and the About page."
+        }
+      },
+      "fields": {
+        "clinicNameAr": "Clinic name (Arabic)",
+        "clinicNameEn": "Clinic name (English)",
+        "phone": "Phone number",
+        "whatsapp": "Booking WhatsApp number",
+        "whatsappHint": "Numbers only, with the country code",
+        "email": "Email address",
+        "mapsUrl": "Google Maps link",
+        "addressAr": "Address (Arabic)",
+        "addressEn": "Address (English)",
+        "hoursAr": "Working hours (Arabic)",
+        "hoursArHint": "Shown in the top bar",
+        "hoursEn": "Working hours (English)",
+        "hoursEnHint": "Shown in the top bar",
+        "instagram": "Instagram link",
+        "snapchat": "Snapchat link",
+        "x": "X (Twitter) link",
+        "facebook": "Facebook link",
+        "tiktok": "TikTok link",
+        "youtube": "YouTube link",
+        "telegram": "Telegram link",
+        "linkedin": "LinkedIn link",
+        "aboutTitleAr": "About title (Arabic)",
+        "aboutTitleEn": "About title (English)",
+        "aboutTextAr": "About text (Arabic)",
+        "aboutTextEn": "About text (English)"
+      }
+    },
+    "images": {
+      "title": "Section images",
+      "hint": "Photos shown in the \"About us\" slider and the Contact section. Upload and remove them freely; the site updates automatically.",
+      "aboutTitle": "About section — photo slider",
+      "aboutHint": "Shown in the About section slider. Images appear in the order below. Clearing all restores the default photos.",
+      "contactTitle": "Contact section",
+      "contactHint": "Shown next to the contact details. Only the first image is used.",
+      "add": "Add image",
+      "remove": "Remove image"
+    }
   }
 }

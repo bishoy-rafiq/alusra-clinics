@@ -1,9 +1,11 @@
 import { getTranslations, getLocale } from "next-intl/server";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import { Mail, Phone, MapPin, ChevronRight,  } from "lucide-react";
-import { FaInstagram, FaWhatsapp, FaSnapchat } from "react-icons/fa6";
+import { Mail, Phone, MapPin, ChevronRight } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa6";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
+import { getSocialLinks } from "@/lib/socials";
+import OfferSubscribeDialog from "@/components/OfferSubscribeDialog";
 
 export default async function Footer({ settings, services }) {
   const locale = await getLocale();
@@ -15,8 +17,9 @@ export default async function Footer({ settings, services }) {
   const name = (s) => (locale === "ar" ? s.name_ar : s.name_en);
   const clinicName = locale === "ar" ? settings?.clinic_name_ar : settings?.clinic_name_en;
   const address = locale === "ar" ? settings?.address_ar : settings?.address_en;
-  const Arrow = locale === "ar" ? ChevronRight : ChevronRight;
-  const waLink = buildWhatsAppLink({ locale, kind: "general" });
+  const Arrow = ChevronRight;
+  const waLink = buildWhatsAppLink({ locale, kind: "general", number: settings?.whatsapp_number });
+  const socials = getSocialLinks(settings);
 
   return (
     <footer className="relative overflow-hidden bg-brand-ink text-white/80">
@@ -39,7 +42,7 @@ export default async function Footer({ settings, services }) {
               <FaWhatsapp size={18} />
               {locale === "ar" ? "احجز عبر واتساب" : "Book on WhatsApp"}
             </a>
- 
+            <OfferSubscribeDialog buttonClassName="btn btn-outline" />
           </div>
         </div>
       </div>
@@ -76,7 +79,7 @@ export default async function Footer({ settings, services }) {
             {dentistry.map((s) => (
               <li key={s.slug}>
                 <Link href={`/services/${s.slug}`} className="group flex items-center gap-1.5 text-sm text-white/55 transition hover:text-brand-aqua">
-                  <Arrow size={13} className={`transition-transform group-hover:${locale === "ar" ? "-translate-x-0.5" : "translate-x-0.5"}`} />
+                  <Arrow size={13} className={`transition-transform ${locale === "ar" ? "group-hover:-translate-x-0.5" : "group-hover:translate-x-0.5"}`} />
                   {name(s)}
                 </Link>
               </li>
@@ -90,7 +93,7 @@ export default async function Footer({ settings, services }) {
             {dermatology.map((s) => (
               <li key={s.slug}>
                 <Link href={`/services/${s.slug}`} className="group flex items-center gap-1.5 text-sm text-white/55 transition hover:text-brand-aqua">
-                  <Arrow size={13} className={`transition-transform group-hover:${locale === "ar" ? "-translate-x-0.5" : "translate-x-0.5"}`} />
+                  <Arrow size={13} className={`transition-transform ${locale === "ar" ? "group-hover:-translate-x-0.5" : "group-hover:translate-x-0.5"}`} />
                   {name(s)}
                 </Link>
               </li>
@@ -107,16 +110,17 @@ export default async function Footer({ settings, services }) {
             <li><Link href="/contact" className="text-sm text-white/55 hover:text-brand-aqua">{tNav("contact")}</Link></li>
           </ul>
 
-          <div className="mt-6 flex gap-3">
-            <a href={settings?.instagram_url} target="_blank" rel="noopener noreferrer" className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 text-white/70 transition hover:border-brand-aqua hover:bg-brand-aqua/10 hover:text-brand-aqua" aria-label="Instagram">
-              <FaInstagram size={17} />
-            </a>
-                       <a href={settings?.snapchat_url} target="_blank" rel="noopener noreferrer" className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 text-white/70 transition hover:border-brand-aqua hover:bg-brand-aqua/10 hover:text-brand-aqua" aria-label="Snapchat">
-              <FaSnapchat size={17} />
-            </a>
-            <a href={settings?.whatsapp_url} target="_blank" rel="noopener noreferrer" className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 text-white/70 transition hover:border-brand-aqua hover:bg-brand-aqua/10 hover:text-brand-aqua" aria-label="Whatsapp">
-              <FaWhatsapp size={17} />
-            </a>
+          <div className="mt-6 flex flex-wrap gap-3">
+            {socials.map(({ name: socialName, href, Icon }) => (
+              <a key={socialName} href={href} target="_blank" rel="noopener noreferrer" className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 text-white/70 transition hover:border-brand-aqua hover:bg-brand-aqua/10 hover:text-brand-aqua" aria-label={socialName}>
+                <Icon size={17} />
+              </a>
+            ))}
+            {(settings?.whatsapp_number || settings?.phone) && (
+              <a href={waLink} target="_blank" rel="noopener noreferrer" className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 text-white/70 transition hover:border-brand-aqua hover:bg-brand-aqua/10 hover:text-brand-aqua" aria-label="Whatsapp">
+                <FaWhatsapp size={17} />
+              </a>
+            )}
           </div>
         </div>
       </div>

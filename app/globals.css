@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 /* ==========================================================================
    Design tokens — premium clinical edition (deep emerald + champagne gold)
    ========================================================================== */
@@ -227,6 +237,17 @@ html[lang="ar"] .eyebrow {
   background: rgba(255, 255, 255, 0.22);
 }
 
+/* Allow a pill button to wrap instead of forcing horizontal scroll on ~300px screens */
+.btn--wrap {
+  white-space: normal;
+  line-height: 1.4;
+  text-align: center;
+  padding-inline: 1.1rem;
+  padding-block: 0.7rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
 /* ==========================================================================
    Cards
    ========================================================================== */
@@ -285,6 +306,20 @@ html[lang="ar"] .eyebrow {
 /* ==========================================================================
    Marquee trust strip
    ========================================================================== */
+@keyframes offer-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes offer-dialog-in {
+  from { opacity: 0; transform: translateY(28px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.offer-backdrop {
+  animation: offer-backdrop-in 0.25s ease-out;
+}
+.offer-dialog {
+  animation: offer-dialog-in 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
 @keyframes marquee-rtl {
   from { transform: translateX(0); }
   to { transform: translateX(50%); }
@@ -379,18 +414,24 @@ html[dir="rtl"] .marquee-track {
 .admin-textarea,
 .admin-select {
   width: 100%;
-  border-radius: 0.75rem;
+  border-radius: 0.8rem;
   border: 1px solid var(--color-brand-line);
-  padding: 0.6rem 0.9rem;
+  padding: 0.65rem 0.9rem;
   font-size: 0.9rem;
   background: white;
-  transition: border-color 0.2s ease;
+  box-shadow: 0 1px 2px rgba(10, 31, 29, 0.04);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .admin-input:focus,
 .admin-textarea:focus,
 .admin-select:focus {
   outline: none;
   border-color: var(--color-brand-aqua);
+  box-shadow: 0 0 0 3px rgba(0, 181, 200, 0.15);
+}
+.admin-input::placeholder,
+.admin-textarea::placeholder {
+  color: rgba(71, 91, 108, 0.45);
 }
 .admin-textarea {
   min-height: 8rem;

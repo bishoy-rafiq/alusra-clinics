@@ -2,6 +2,7 @@
 
 import { useMemo, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Plus, Pencil, Trash2, Images, Loader2, Inbox } from "lucide-react";
 import AdminDialog from "./AdminDialog";
 import ConfirmDialog from "./ConfirmDialog";
@@ -15,14 +16,8 @@ import {
   deleteBeforeAfterCase,
 } from "@/app/admin/(dashboard)/before-after/actions";
 
-function imagesLabel(item) {
-  if (item.before_image && item.after_image) return "قبل وبعد";
-  if (item.before_image) return "قبل فقط";
-  if (item.after_image) return "بعد فقط";
-  return "بدون صور";
-}
-
 export default function BeforeAfterManager({ items, services = [] }) {
+  const t = useTranslations("admin");
   const router = useRouter();
   const [search, setSearch] = useState("");
   const [formOpen, setFormOpen] = useState(false);
@@ -32,7 +27,15 @@ export default function BeforeAfterManager({ items, services = [] }) {
   const [pending, startTransition] = useTransition();
   const submittingRef = useRef(false);
 
-  const serviceName = (id) => services.find((s) => s.id === id)?.name_ar || "بدون ربط";
+  function imagesLabel(item) {
+    if (item.before_image && item.after_image) return t("beforeAfter.imagesLabel.both");
+    if (item.before_image) return t("beforeAfter.imagesLabel.before");
+    if (item.after_image) return t("beforeAfter.imagesLabel.after");
+    return t("beforeAfter.imagesLabel.none");
+  }
+
+  const serviceName = (id) =>
+    services.find((s) => s.id === id)?.name_ar || t("beforeAfter.noService");
 
   const filtered = useMemo(() => {
     const nameById = new Map(services.map((s) => [s.id, s.name_ar]));
@@ -72,8 +75,8 @@ export default function BeforeAfterManager({ items, services = [] }) {
       } catch (err) {
         setError(
           err?.message
-            ? `تعذّر الحفظ: ${err.message}`
-            : "تعذّر الحفظ. تأكد من اتصال Supabase وحاول مرة أخرى."
+            ? t("common.saveFailed", { message: err.message })
+            : t("common.saveFailedGeneric")
         );
       } finally {
         submittingRef.current = false;
@@ -86,15 +89,15 @@ export default function BeforeAfterManager({ items, services = [] }) {
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <SearchBox value={search} onChange={setSearch} placeholder="ابحث في الحالات..." />
+        <SearchBox value={search} onChange={setSearch} placeholder={t("beforeAfter.search")} />
         <button onClick={openCreate} className="btn btn-primary shrink-0">
-          <Plus size={16} /> حالة جديدة
+          <Plus size={16} /> {t("beforeAfter.add")}
         </button>
       </div>
 
       <div className="flex items-center gap-2 text-xs font-semibold text-brand-slate">
         <span className="rounded-full bg-brand-teal px-2.5 py-1 text-white">{count}</span>
-        حالة
+        {t("beforeAfter.countLabel")}
       </div>
 
       <div className="space-y-3">
@@ -106,7 +109,7 @@ export default function BeforeAfterManager({ items, services = [] }) {
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-bold text-brand-ink">{item.title_ar}</p>
               <p className="mt-0.5 truncate text-xs text-brand-slate">
-                الخدمة: {serviceName(item.related_service_id)}
+                {t("beforeAfter.serviceLabel", { name: serviceName(item.related_service_id) })}
               </p>
               <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1.5">
                 <StatusBadge active={item.active} />
@@ -117,16 +120,16 @@ export default function BeforeAfterManager({ items, services = [] }) {
               <button
                 onClick={() => openEdit(item)}
                 className="admin-icon-btn text-brand-teal hover:bg-brand-mist"
-                title="تعديل"
-                aria-label={`تعديل ${item.title_ar}`}
+                title={t("common.edit")}
+                aria-label={t("common.editLabel", { name: item.title_ar })}
               >
                 <Pencil size={16} />
               </button>
               <button
                 onClick={() => setDeleting(item)}
                 className="admin-icon-btn text-red-500 hover:bg-red-50"
-                title="حذف"
-                aria-label={`حذف ${item.title_ar}`}
+                title={t("common.delete")}
+                aria-label={t("common.deleteLabel", { name: item.title_ar })}
               >
                 <Trash2 size={16} />
               </button>
@@ -142,10 +145,10 @@ export default function BeforeAfterManager({ items, services = [] }) {
           </span>
           <div>
             <p className="text-sm font-bold text-brand-ink">
-              {search ? "لا توجد نتائج مطابقة" : "لا توجد حالات بعد"}
+              {search ? t("common.noResults") : t("beforeAfter.emptyTitle")}
             </p>
             <p className="mt-1 text-xs text-brand-slate">
-              {search ? "جرّب كلمة بحث أخرى." : "ابدأ بإضافة أول حالة عبر زر «حالة جديدة»."}
+              {search ? t("common.tryDifferent") : t("beforeAfter.emptyDesc")}
             </p>
           </div>
         </div>
@@ -154,35 +157,35 @@ export default function BeforeAfterManager({ items, services = [] }) {
       <AdminDialog
         open={formOpen}
         onClose={() => setFormOpen(false)}
-        title={editing ? "تعديل الحالة" : "حالة جديدة"}
-        subtitle={editing ? "حدّث بيانات الحالة ثم احفظ." : "أضف حالة قبل وبعد جديدة."}
+        title={editing ? t("beforeAfter.dialogEditTitle") : t("beforeAfter.dialogCreateTitle")}
+        subtitle={editing ? t("beforeAfter.dialogEditSubtitle") : t("beforeAfter.dialogCreateSubtitle")}
         size="lg"
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
-            <AdminField label="العنوان (عربي)">
+            <AdminField label={t("beforeAfter.fields.titleAr")}>
               <input name="title_ar" required defaultValue={editing?.title_ar} className="admin-input" />
             </AdminField>
-            <AdminField label="Title (English)">
+            <AdminField label={t("beforeAfter.fields.titleEn")}>
               <input name="title_en" required defaultValue={editing?.title_en} className="admin-input" />
             </AdminField>
-            <AdminField label="الوصف (عربي)" className="sm:col-span-2">
+            <AdminField label={t("beforeAfter.fields.descAr")} className="sm:col-span-2">
               <textarea name="description_ar" defaultValue={editing?.description_ar} className="admin-textarea" />
             </AdminField>
-            <AdminField label="Description (English)" className="sm:col-span-2">
+            <AdminField label={t("beforeAfter.fields.descEn")} className="sm:col-span-2">
               <textarea name="description_en" defaultValue={editing?.description_en} className="admin-textarea" />
             </AdminField>
             <AdminField
-              label="الخدمة المرتبطة"
+              label={t("beforeAfter.fields.service")}
               className="sm:col-span-2"
-              hint="إن ربطت الحالة بخدمة، ستظهر أيضاً داخل صفحة الخدمة نفسها."
+              hint={t("beforeAfter.fields.serviceHint")}
             >
               <select
                 name="related_service_id"
                 defaultValue={editing?.related_service_id || ""}
                 className="admin-select"
               >
-                <option value="">— بدون ربط (تظهر في الرئيسية فقط) —</option>
+                <option value="">{t("beforeAfter.fields.noLink")}</option>
                 {services.map((service) => (
                   <option key={service.id} value={service.id}>
                     {service.name_ar} — {service.name_en}
@@ -190,19 +193,19 @@ export default function BeforeAfterManager({ items, services = [] }) {
                 ))}
               </select>
             </AdminField>
-            <AdminField label="صورة «قبل»">
+            <AdminField label={t("beforeAfter.fields.beforeImage")}>
               <ImageUploader name="before_image" defaultValue={editing?.before_image} folder="before-after" />
             </AdminField>
-            <AdminField label="صورة «بعد»">
+            <AdminField label={t("beforeAfter.fields.afterImage")}>
               <ImageUploader name="after_image" defaultValue={editing?.after_image} folder="before-after" />
             </AdminField>
-            <AdminField label="ترتيب العرض">
+            <AdminField label={t("beforeAfter.fields.sortOrder")}>
               <input type="number" name="sort_order" defaultValue={editing?.sort_order ?? 0} className="admin-input" />
             </AdminField>
-            <AdminField label="ظهور الحالة">
+            <AdminField label={t("beforeAfter.fields.visibility")}>
               <label className="flex h-10 items-center gap-2 rounded-xl border border-brand-line bg-white px-3 text-sm font-semibold text-brand-ink">
                 <input type="checkbox" name="active" defaultChecked={editing?.active ?? true} className="h-4 w-4 accent-brand-teal" />
-                مفعّل وظاهر في الموقع
+                {t("beforeAfter.fields.visible")}
               </label>
             </AdminField>
           </div>
@@ -213,11 +216,11 @@ export default function BeforeAfterManager({ items, services = [] }) {
 
           <div className="flex items-center justify-end gap-2 border-t border-brand-line pt-4">
             <button type="button" onClick={() => setFormOpen(false)} className="admin-btn-ghost">
-              إلغاء
+              {t("common.cancel")}
             </button>
             <button type="submit" disabled={pending} className="btn btn-primary">
               {pending && <Loader2 size={15} className="animate-spin" />}
-              {editing ? "حفظ التعديلات" : "إضافة الحالة"}
+              {editing ? t("common.saveChanges") : t("beforeAfter.add")}
             </button>
           </div>
         </form>
@@ -226,8 +229,8 @@ export default function BeforeAfterManager({ items, services = [] }) {
       <ConfirmDialog
         open={Boolean(deleting)}
         onClose={() => setDeleting(null)}
-        title="حذف الحالة"
-        message={`هل أنت متأكد من حذف حالة «${deleting?.title_ar}»؟ لا يمكن التراجع عن هذا الإجراء.`}
+        title={t("beforeAfter.deleteTitle")}
+        message={t("beforeAfter.deleteMessage", { name: deleting?.title_ar })}
         action={deleteBeforeAfterCase}
         id={deleting?.id}
       />

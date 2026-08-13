@@ -1,27 +1,27 @@
 import { getTranslations, getLocale } from "next-intl/server";
 import Image from "next/image";
 import { MapPin, Phone, Mail, Star } from "lucide-react";
-import { FaInstagram, FaSnapchat, FaWhatsapp } from "react-icons/fa6";
+import { FaWhatsapp } from "react-icons/fa6";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { getSettings } from "@/lib/data";
+import { getSocialLinks } from "@/lib/socials";
+import { buildWhatsAppLink } from "@/lib/whatsapp";
 
 export default async function ContactSection() {
   const locale = await getLocale();
   const t = await getTranslations("contact");
   const settings = await getSettings();
   const address = locale === "ar" ? settings.address_ar : settings.address_en;
+  const contactImage = settings.contact_images?.[0] || "/images/alusra-clinics.jpeg";
 
   const items = [
     { icon: MapPin, label: t("address"), value: address, href: settings.maps_url, accent: "from-brand-teal to-brand-teal-mid" },
     { icon: Phone, label: t("phone"), value: settings.phone, href: `tel:${settings.phone}`, accent: "from-brand-teal-mid to-brand-aqua" },
-    { icon: FaWhatsapp, label: t("whatsapp"), value: settings.phone, href: settings.whatsapp_url, accent: "from-brand-aqua to-[#25d366]" },
+    { icon: FaWhatsapp, label: t("whatsapp"), value: settings.whatsapp_number || settings.phone, href: buildWhatsAppLink({ locale, kind: "general", number: settings.whatsapp_number }), accent: "from-brand-aqua to-[#25d366]" },
     { icon: Mail, label: t("email"), value: settings.email, href: `mailto:${settings.email}`, accent: "from-brand-navy to-brand-teal" },
   ];
 
-  const socials = [
-    { name: "Instagram", href: settings.instagram_url, Icon: FaInstagram },
-    { name: "Snapchat", href: settings.snapchat_url, Icon: FaSnapchat },
-  ].filter((s) => s.href);
+  const socials = getSocialLinks(settings);
 
   return (
     <section className="bg-gradient-brand relative overflow-hidden text-white" id="contact">
@@ -33,7 +33,7 @@ export default async function ContactSection() {
         <div data-reveal="bottom" className="revealed relative mx-auto w-full max-w-md">
           <div className="img-frame aspect-[4/4.6] w-full">
             <Image
-              src="/images/alusra-clinics.jpeg"
+              src={contactImage}
               alt=""
               fill
               sizes="(min-width: 1024px) 40vw, 90vw"
@@ -67,7 +67,7 @@ export default async function ContactSection() {
                 href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-4 rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-white/30 hover:bg-white/15"
+                className="group flex min-w-0 items-center gap-4 rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-white/30 hover:bg-white/15"
               >
                 <span className={`icon-chip flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${item.accent} shadow-[var(--shadow-lifted)]`}>
                   <item.icon size={20} />
@@ -80,7 +80,7 @@ export default async function ContactSection() {
             ))}
           </div>
 
-          <div className="mt-8 flex items-center gap-3">
+          <div className="mt-8 flex flex-wrap items-center gap-3">
             <span className="text-xs font-bold uppercase tracking-widest text-white/60">
               {locale === "ar" ? "تابعنا على" : "Follow us"}
             </span>

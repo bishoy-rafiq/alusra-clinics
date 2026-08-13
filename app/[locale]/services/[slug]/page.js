@@ -40,7 +40,8 @@ export default async function ServiceDetailPage({ params }) {
   const service = await getServiceBySlug(slug);
   if (!service) notFound();
 
-  const beforeAfterCases = await getBeforeAfterCasesByService(service);  const baT = await getTranslations("beforeAfter");
+  const beforeAfterCases = await getBeforeAfterCasesByService(service);
+  const baT = await getTranslations("beforeAfter");
   const excerpt = locale === "ar" ? service.excerpt_ar : service.excerpt_en;
   const name = locale === "ar" ? service.name_ar : service.name_en;
   const description = locale === "ar" ? service.description_ar : service.description_en;

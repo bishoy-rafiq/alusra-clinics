@@ -2,15 +2,18 @@ import { getTranslations, getLocale } from "next-intl/server";
 import PageHeader from "@/components/ui/PageHeader";
 import DoctorCard from "@/components/ui/DoctorCard";
 import { getDoctors } from "@/lib/data";
-import { breadcrumbSchema, physicianSchema, localizedAlternates, SITE_URL } from "@/lib/seo";
+import { breadcrumbSchema, physicianSchema, localizedAlternates, pageOpenGraph, SITE_URL } from "@/lib/seo";
 
 export async function generateMetadata({ params }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "doctors" });
+  const title = t("title");
+  const description = t("subtitle");
   return {
-    title: t("title"),
-    description: t("subtitle"),
+    title,
+    description,
     alternates: localizedAlternates("/doctors", locale),
+    ...pageOpenGraph({ locale, title, description, path: "/doctors" }),
   };
 }
 

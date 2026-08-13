@@ -80,20 +80,6 @@ create table if not exists doctors (
   updated_at timestamptz not null default now()
 );
 
--- ---------------------------------------------------------------------------
--- testimonials  (manually curated Google Maps reviews, or live via Places API)
--- ---------------------------------------------------------------------------
-create table if not exists testimonials (
-  id uuid primary key default gen_random_uuid(),
-  author_name text not null,
-  rating int not null check (rating between 1 and 5),
-  text_ar text,
-  text_en text,
-  source text not null default 'manual', -- 'manual' | 'google'
-  avatar_url text,
-  published boolean not null default true,
-  created_at timestamptz not null default now()
-);
 
 -- ---------------------------------------------------------------------------
 -- site_settings  (single row: id = 1)
@@ -107,20 +93,41 @@ create table if not exists site_settings (
   email text,
   address_ar text,
   address_en text,
+  working_hours_ar text,
+  working_hours_en text,
   maps_url text,
   instagram_url text,
   snapchat_url text,
   x_url text,
   facebook_url text,
+  tiktok_url text,
+  youtube_url text,
+  telegram_url text,
+  linkedin_url text,
+  threads_url text,
   google_place_id text,
   about_title_ar text,
   about_title_en text,
   about_text_ar text,
   about_text_en text,
+  about_images jsonb,
+  contact_images jsonb,
   updated_at timestamptz not null default now(),
   constraint single_row check (id = 1)
 );
 insert into site_settings (id) values (1) on conflict (id) do nothing;
+
+-- Add columns that were introduced after the table was first created, so
+-- re-running this schema file on an existing database upgrades it in place.
+alter table site_settings add column if not exists working_hours_ar text;
+alter table site_settings add column if not exists working_hours_en text;
+alter table site_settings add column if not exists tiktok_url text;
+alter table site_settings add column if not exists youtube_url text;
+alter table site_settings add column if not exists telegram_url text;
+alter table site_settings add column if not exists linkedin_url text;
+alter table site_settings add column if not exists threads_url text;
+alter table site_settings add column if not exists about_images jsonb;
+alter table site_settings add column if not exists contact_images jsonb;
 
 -- ---------------------------------------------------------------------------
 -- before_after_cases  (before/after result showcase, managed from admin)
@@ -134,6 +141,34 @@ create table if not exists before_after_cases (
   description_en text default '',
   before_image text,
   after_image text,
+  sort_order int not null default 0,
+  active boolean not null default true,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- ---------------------------------------------------------------------------
+-- offer_subscribers  (offer interest subscriptions collected on the public site)
+-- ---------------------------------------------------------------------------
+create table if not exists offer_subscribers (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  email text,
+  phone text not null,
+  interests text[] not null default '{}', -- e.g. {'dentistry','dermatology'}
+  consent boolean not null default false, -- agreed to receive WhatsApp offers
+  created_at timestamptz not null default now()
+);
+
+-- ---------------------------------------------------------------------------
+-- faqs  (frequently asked questions shown on the home page, managed from admin)
+-- ---------------------------------------------------------------------------
+create table if not exists faqs (
+  id uuid primary key default gen_random_uuid(),
+  question_ar text not null default '',
+  question_en text not null default '',
+  answer_ar text not null default '',
+  answer_en text not null default '',
   sort_order int not null default 0,
   active boolean not null default true,
   created_at timestamptz not null default now(),
@@ -155,7 +190,7 @@ do $$
 declare
   t text;
 begin
-  foreach t in array array['services','offers','doctors','site_settings','before_after_cases'] loop
+  foreach t in array array['services','offers','doctors','site_settings','before_after_cases','offer_subscribers','faqs'] loop
     execute format('drop trigger if exists trg_set_updated_at on %I;', t);
     execute format('create trigger trg_set_updated_at before update on %I for each row execute function set_updated_at();', t);
   end loop;
@@ -173,9 +208,10 @@ alter table service_categories enable row level security;
 alter table services enable row level security;
 alter table offers enable row level security;
 alter table doctors enable row level security;
-alter table testimonials enable row level security;
 alter table site_settings enable row level security;
 alter table before_after_cases enable row level security;
+alter table offer_subscribers enable row level security;
+alter table faqs enable row level security;
 
 -- service_categories
 drop policy if exists "public read categories" on service_categories;
@@ -221,12 +257,31 @@ create policy "public read active before/after" on before_after_cases for select
 drop policy if exists "admin write before/after" on before_after_cases;
 create policy "admin write before/after" on before_after_cases for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
 
+-- offer_subscribers — anyone can subscribe (INSERT); only admins can read/delete
+drop policy if exists "public subscribe to offers" on offer_subscribers;
+create policy "public subscribe to offers" on offer_subscribers for insert with check (true);
+drop policy if exists "admin read subscribers" on offer_subscribers;
+create policy "admin read subscribers" on offer_subscribers for select using (auth.role() = 'authenticated');
+drop policy if exists "admin delete subscribers" on offer_subscribers;
+create policy "admin delete subscribers" on offer_subscribers for delete using (auth.role() = 'authenticated');
+
+-- faqs
+drop policy if exists "public read active faqs" on faqs;
+create policy "public read active faqs" on faqs for select using (active = true or auth.role() = 'authenticated');
+drop policy if exists "admin write faqs" on faqs;
+create policy "admin write faqs" on faqs for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+
 -- ============================================================================
 -- Storage bucket for uploaded images (offers, services, doctors)
 -- ============================================================================
 insert into storage.buckets (id, name, public)
 values ('media', 'media', true)
 on conflict (id) do nothing;
+
+-- Refresh the PostgREST schema cache so new/updated columns are immediately
+-- visible to the API. Run this any time you add or change columns and then
+-- get "Could not find the '...' column ... in the schema cache" errors.
+notify pgrst, 'reload schema';
 
 drop policy if exists "public read media" on storage.objects;
 create policy "public read media" on storage.objects for select using (bucket_id = 'media');

@@ -3,10 +3,14 @@
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
+import { useLocale, useTranslations } from "next-intl";
 import { Mail, Lock, Loader2, ShieldCheck, AlertCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import AdminLocaleSwitcher from "@/components/admin/AdminLocaleSwitcher";
 
 function LoginForm() {
+  const t = useTranslations("admin");
+  const locale = useLocale();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
@@ -22,23 +26,38 @@ function LoginForm() {
       const supabase = createClient();
       const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
       if (signInError) {
-        setError("بيانات الدخول غير صحيحة. تحقق من البريد الإلكتروني وكلمة المرور.");
+        setError(t("login.invalidCredentials"));
         return;
       }
-      router.replace(searchParams.get("next") || "/admin");
+      const nextParam = searchParams.get("next");
+      const nextPath =
+        nextParam &&
+        nextParam.startsWith("/") &&
+        !nextParam.startsWith("//") &&
+        !nextParam.startsWith("/\\")
+          ? nextParam
+          : "/admin";
+      router.replace(nextPath);
       router.refresh();
     } catch {
-      setError("لم يتم ربط Supabase بعد. أضف بيانات الاتصال في ملف .env.local أولاً (راجع README).");
+      setError(t("login.notConfigured"));
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-brand-ink px-4" dir="rtl">
+    <div
+      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-brand-ink px-4"
+      dir={locale === "ar" ? "rtl" : "ltr"}
+    >
       <div className="absolute inset-0 bg-mesh opacity-70" />
       <div className="absolute -start-24 top-1/3 h-72 w-72 rounded-full bg-brand-teal/40 blur-[110px]" />
       <div className="absolute -end-20 bottom-1/4 h-72 w-72 rounded-full bg-brand-gold/25 blur-[110px]" />
+
+      <div className="absolute end-4 top-4">
+        <AdminLocaleSwitcher variant="dark" />
+      </div>
 
       <div className="relative w-full max-w-sm">
         <div className="rounded-3xl border border-white/15 bg-white/95 p-8 shadow-[var(--shadow-lifted)] backdrop-blur-xl">
@@ -50,13 +69,13 @@ function LoginForm() {
               height={40}
               className="h-9 w-auto opacity-90"
             />
-            <p className="font-display text-lg font-extrabold text-brand-ink">لوحة تحكم عيادات الأسرة</p>
-            <p className="text-sm text-brand-slate">سجّل الدخول لإدارة العروض والخدمات والأطباء</p>
+            <p className="font-display text-lg font-extrabold text-brand-ink">{t("login.title")}</p>
+            <p className="text-sm text-brand-slate">{t("login.subtitle")}</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="mb-1.5 block text-sm font-semibold text-brand-ink">البريد الإلكتروني</label>
+              <label className="mb-1.5 block text-sm font-semibold text-brand-ink">{t("login.email")}</label>
               <div className="relative">
                 <Mail size={16} className="pointer-events-none absolute start-3.5 top-1/2 -translate-y-1/2 text-brand-slate/50" />
                 <input
@@ -70,7 +89,7 @@ function LoginForm() {
               </div>
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-semibold text-brand-ink">كلمة المرور</label>
+              <label className="mb-1.5 block text-sm font-semibold text-brand-ink">{t("login.password")}</label>
               <div className="relative">
                 <Lock size={16} className="pointer-events-none absolute start-3.5 top-1/2 -translate-y-1/2 text-brand-slate/50" />
                 <input
@@ -92,14 +111,12 @@ function LoginForm() {
 
             <button type="submit" disabled={loading} className="btn btn-primary w-full justify-center">
               {loading ? <Loader2 size={16} className="animate-spin" /> : <ShieldCheck size={16} />}
-              {loading ? "جاري الدخول..." : "تسجيل الدخول"}
+              {loading ? t("login.signingIn") : t("login.signIn")}
             </button>
           </form>
         </div>
 
-        <p className="mt-4 text-center text-xs text-white/50">
-          منطقة محمية — الوصول مخصّص لفريق إدارة العيادة.
-        </p>
+        <p className="mt-4 text-center text-xs text-white/50">{t("login.protected")}</p>
       </div>
     </div>
   );

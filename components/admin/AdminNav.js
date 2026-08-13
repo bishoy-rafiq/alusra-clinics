@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
   LayoutDashboard,
   Tag,
@@ -11,16 +12,20 @@ import {
   LogOut,
   ImageIcon,
   ShieldCheck,
+  Mail,
+  HelpCircle,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 const NAV = [
-  { href: "/admin", label: "نظرة عامة", icon: LayoutDashboard, exact: true },
-  { href: "/admin/offers", label: "العروض", icon: Tag },
-  { href: "/admin/services", label: "الخدمات", icon: Stethoscope },
-  { href: "/admin/doctors", label: "الأطباء", icon: Users },
-  { href: "/admin/before-after", label: "قبل وبعد", icon: ImageIcon },
-  { href: "/admin/settings", label: "الإعدادات", icon: Settings },
+  { key: "overview", href: "/admin", icon: LayoutDashboard, exact: true },
+  { key: "offers", href: "/admin/offers", icon: Tag },
+  { key: "subscribers", href: "/admin/subscribers", icon: Mail },
+  { key: "services", href: "/admin/services", icon: Stethoscope },
+  { key: "doctors", href: "/admin/doctors", icon: Users },
+  { key: "beforeAfter", href: "/admin/before-after", icon: ImageIcon },
+  { key: "faqs", href: "/admin/faqs", icon: HelpCircle },
+  { key: "settings", href: "/admin/settings", icon: Settings },
 ];
 
 function useActive() {
@@ -30,10 +35,11 @@ function useActive() {
 
 export function AdminSidebarNav() {
   const isActive = useActive();
+  const t = useTranslations("admin");
 
   return (
     <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
-      <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-white/35">القائمة الرئيسية</p>
+      <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-white/35">{t("layout.menu")}</p>
       {NAV.map((item) => {
         const active = isActive(item);
         return (
@@ -46,7 +52,7 @@ export function AdminSidebarNav() {
             <span className="admin-sidebar-ic">
               <item.icon size={15} />
             </span>
-            <span className="flex-1">{item.label}</span>
+            <span className="flex-1">{t(`nav.${item.key}`)}</span>
             {active && <span className="h-1.5 w-1.5 rounded-full bg-brand-aqua" />}
           </Link>
         );
@@ -57,6 +63,7 @@ export function AdminSidebarNav() {
 
 export function AdminMobileNav() {
   const isActive = useActive();
+  const t = useTranslations("admin");
 
   return (
     <nav className="flex gap-1.5 overflow-x-auto border-b border-brand-line bg-white px-3 py-2.5 md:hidden">
@@ -74,7 +81,7 @@ export function AdminMobileNav() {
             }`}
           >
             <item.icon size={13} />
-            {item.label}
+            {t(`nav.${item.key}`)}
           </Link>
         );
       })}
@@ -84,6 +91,7 @@ export function AdminMobileNav() {
 
 export function AdminLogoutButton({ variant = "dark" }) {
   const router = useRouter();
+  const t = useTranslations("admin");
 
   async function handleLogout() {
     const supabase = createClient();
@@ -101,14 +109,13 @@ export function AdminLogoutButton({ variant = "dark" }) {
           : "flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-semibold text-white/55 transition-colors hover:bg-red-500/15 hover:text-red-300"
       }
     >
-      <LogOut size={15} /> تسجيل الخروج
+      <LogOut size={15} /> {t("layout.logout")}
     </button>
   );
 }
 
-
-
 export function AdminUserChip({ email }) {
+  const t = useTranslations("admin");
   const initial = email?.charAt(0)?.toUpperCase() || "أ";
   return (
     <div className="flex items-center gap-2 rounded-xl bg-white/5 px-3 py-2.5 ring-1 ring-white/10">
@@ -117,7 +124,7 @@ export function AdminUserChip({ email }) {
       </span>
       <div className="min-w-0">
         <p className="flex items-center gap-1 text-xs font-bold text-white/90">
-          <ShieldCheck size={12} className="text-brand-aqua" /> المدير
+          <ShieldCheck size={12} className="text-brand-aqua" /> {t("layout.role")}
         </p>
         <p className="truncate text-[11px] text-white/45">{email}</p>
       </div>

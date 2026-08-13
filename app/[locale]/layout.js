@@ -10,6 +10,7 @@ import WhatsAppFloat from "@/components/layout/WhatsAppFloat";
 import StickyBookBar from "@/components/layout/StickyBookBar";
 import { organizationSchema, websiteSchema, SITE_URL } from "@/lib/seo";
 import { getSettings, getServices } from "@/lib/data";
+import { getGooglePlaceReviews } from "@/lib/googlePlaces";
 import "../globals.css";
 
 const cairo = Cairo({
@@ -89,15 +90,34 @@ export default async function LocaleLayout({ children, params }) {
   }
 
   const messages = await getMessages();
-  const [settings, services] = await Promise.all([getSettings(), getServices()]);
+  const [settings, services, liveReviews] = await Promise.all([
+    getSettings(),
+    getServices(),
+    getGooglePlaceReviews(locale),
+  ]);
   const dir = locale === "ar" ? "rtl" : "ltr";
+
+  const schemaSettings = liveReviews
+    ? {
+        ...settings,
+        ...(liveReviews.rating
+          ? {
+              aggregateRating: {
+                ratingValue: liveReviews.rating,
+                reviewCount: liveReviews.totalReviews || 0,
+              },
+            }
+          : {}),
+        ...(liveReviews.reviews?.length ? { reviews: liveReviews.reviews } : {}),
+      }
+    : settings;
 
   return (
     <html lang={locale} dir={dir} className={`${cairo.variable} ${fraunces.variable}`}>
       <body className="antialiased">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema(locale, settings)) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema(locale, schemaSettings)) }}
         />
         <script
           type="application/ld+json"
@@ -107,7 +127,7 @@ export default async function LocaleLayout({ children, params }) {
           <Header settings={settings} services={services} />
           <main>{children}</main>
           <Footer settings={settings} services={services} />
-          <WhatsAppFloat locale={locale} />
+          <WhatsAppFloat locale={locale} whatsappNumber={settings?.whatsapp_number} />
           <StickyBookBar settings={settings} />
         </NextIntlClientProvider>
       </body>

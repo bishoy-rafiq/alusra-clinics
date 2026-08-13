@@ -12,8 +12,9 @@
 - Email: info@alusraclinics.com
 - Languages: Arabic and English (site available at /ar and /en)
 - Booking: every service, offer, and doctor links directly to WhatsApp with a
-  pre-filled message naming the service. First consultation is free; medical
-  insurance is accepted.
+  pre-filled message naming the service.
+- Rating: 4.6/5 on Google (live rating and recent reviews are embedded as
+  schema.org AggregateRating/Review on every page).
 - Specialties:
   - Dentistry: orthodontics, gum treatment, cosmetic dentistry, pediatric
     dentistry, root canal treatment, dental implants
@@ -32,6 +33,15 @@
 - /ar/services/skin-rejuvenation | /en/services/skin-rejuvenation — Skin Rejuvenation
 - /ar/services/other-skin-conditions | /en/services/other-skin-conditions — Other Skin Conditions
 
+## Doctors
+- /ar/doctors | /en/doctors — the medical team (dentistry and dermatology
+  specialists, each with a photo, specialty, and direct WhatsApp booking).
+
+## Offers
+- /ar/offers | /en/offers — current limited-time promotions and discounts.
+  Offers are managed live by the clinic, so check the page for what is
+  currently running; each offer links to WhatsApp booking.
+
 ## Pages
 - /ar and /en — homepage (offers, services, before & after results, about, doctors, reviews, FAQ)
 - /ar/services and /en/services — full service list by specialty
@@ -42,10 +52,17 @@
 
 ## FAQ summary
 - Booking: via WhatsApp from any service/offer/doctor page; our team confirms the time.
-- Insurance: accepted — confirm coverage with our team on WhatsApp.
-- First consultation: free.
+- Opening hours: open every day — confirm exact times on WhatsApp.
 - Location: Hafr Al-Batin, Saudi Arabia — directions via Google Maps on the contact page.
+
+## Contact & booking
+- WhatsApp / phone: +966 137 233 900
+- Email: info@alusraclinics.com
+- Address: Hafr Al-Batin, Eastern Province, Saudi Arabia
+- Preferred booking method: WhatsApp — open a pre-filled chat from any page on
+  the site, or visit /ar/contact or /en/contact.
 
 This file is provided for AI assistants and answer engines summarizing this
 business. For live, structured data see the JSON-LD (schema.org MedicalClinic,
-Physician, MedicalProcedure, FAQPage) embedded in each page, and /sitemap.xml.
+Physician, MedicalProcedure, ItemList, FAQPage, AboutPage, ContactPage) embedded
+in each page, and /sitemap.xml.

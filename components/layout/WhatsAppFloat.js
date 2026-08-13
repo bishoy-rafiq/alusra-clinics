@@ -4,9 +4,9 @@ import { FaWhatsapp } from "react-icons/fa6";
 import { useTranslations } from "next-intl";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
-export default function WhatsAppFloat({ locale }) {
+export default function WhatsAppFloat({ locale, whatsappNumber }) {
   const t = useTranslations("common");
-  const href = buildWhatsAppLink({ locale, kind: "general" });
+  const href = buildWhatsAppLink({ locale, kind: "general", number: whatsappNumber });
 
   return (
     <a

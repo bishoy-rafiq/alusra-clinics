@@ -21,7 +21,10 @@ export default async function sitemap() {
       changeFrequency: path === "" ? "weekly" : "monthly",
       priority: path === "" ? 1 : path === "/services" ? 0.9 : 0.8,
       alternates: {
-        languages: Object.fromEntries(routing.locales.map((l) => [l, `${SITE_URL}/${l}${path}`])),
+        languages: {
+          ...Object.fromEntries(routing.locales.map((l) => [l, `${SITE_URL}/${l}${path}`])),
+          "x-default": `${SITE_URL}/ar${path}`,
+        },
       },
       ...(images ? { images } : {}),
     }))

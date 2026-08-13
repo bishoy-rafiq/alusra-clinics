@@ -2,6 +2,7 @@
 
 import { useMemo, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Plus, Pencil, Trash2, Stethoscope, Loader2, Inbox } from "lucide-react";
 import AdminDialog from "./AdminDialog";
 import ConfirmDialog from "./ConfirmDialog";
@@ -12,12 +13,8 @@ import ImageUploader from "./ImageUploader";
 import { ICONS } from "@/lib/icon-map";
 import { createService, updateService, deleteService } from "@/app/admin/(dashboard)/services/actions";
 
-const CATEGORY_NAMES = {
-  dentistry: "طب الأسنان",
-  dermatology: "الجلدية",
-};
-
 export default function ServicesManager({ items, categories = [] }) {
+  const t = useTranslations("admin");
   const router = useRouter();
   const [search, setSearch] = useState("");
   const [formOpen, setFormOpen] = useState(false);
@@ -26,6 +23,10 @@ export default function ServicesManager({ items, categories = [] }) {
   const [error, setError] = useState("");
   const [pending, startTransition] = useTransition();
   const submittingRef = useRef(false);
+
+  const categoryName = (slug) =>
+    categories.find((c) => c.slug === slug)?.name_ar ||
+    (slug === "dentistry" || slug === "dermatology" ? t(`services.categories.${slug}`) : slug);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -64,8 +65,8 @@ export default function ServicesManager({ items, categories = [] }) {
       } catch (err) {
         setError(
           err?.message
-            ? `تعذّر الحفظ: ${err.message}`
-            : "تعذّر الحفظ. تأكد من اتصال Supabase وحاول مرة أخرى."
+            ? t("common.saveFailed", { message: err.message })
+            : t("common.saveFailedGeneric")
         );
       } finally {
         submittingRef.current = false;
@@ -78,15 +79,15 @@ export default function ServicesManager({ items, categories = [] }) {
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <SearchBox value={search} onChange={setSearch} placeholder="ابحث في الخدمات..." />
+        <SearchBox value={search} onChange={setSearch} placeholder={t("services.search")} />
         <button onClick={openCreate} className="btn btn-primary shrink-0">
-          <Plus size={16} /> خدمة جديدة
+          <Plus size={16} /> {t("services.add")}
         </button>
       </div>
 
       <div className="flex items-center gap-2 text-xs font-semibold text-brand-slate">
         <span className="rounded-full bg-brand-teal px-2.5 py-1 text-white">{count}</span>
-        خدمة
+        {t("services.countLabel")}
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -105,25 +106,25 @@ export default function ServicesManager({ items, categories = [] }) {
               </div>
               <div className="mt-3 flex items-center justify-between gap-2 border-t border-brand-line/70 pt-3">
                 <div className="flex items-center gap-2">
-                  <StatusBadge active={service.active} activeLabel="مفعّلة" inactiveLabel="متوقفة" />
+                  <StatusBadge active={service.active} activeLabel={t("common.activeFem")} inactiveLabel={t("common.inactiveFem")} />
                   <span className="rounded-full bg-white px-2 py-0.5 text-[10px] font-bold text-brand-teal ring-1 ring-brand-line">
-                    {CATEGORY_NAMES[service.category] || service.category}
+                    {categoryName(service.category)}
                   </span>
                 </div>
                 <div className="flex shrink-0 items-center gap-1">
                   <button
                     onClick={() => openEdit(service)}
                     className="admin-icon-btn text-brand-teal hover:bg-brand-mist"
-                    title="تعديل"
-                    aria-label={`تعديل ${service.name_ar}`}
+                    title={t("common.edit")}
+                    aria-label={t("common.editLabel", { name: service.name_ar })}
                   >
                     <Pencil size={15} />
                   </button>
                   <button
                     onClick={() => setDeleting(service)}
                     className="admin-icon-btn text-red-500 hover:bg-red-50"
-                    title="حذف"
-                    aria-label={`حذف ${service.name_ar}`}
+                    title={t("common.delete")}
+                    aria-label={t("common.deleteLabel", { name: service.name_ar })}
                   >
                     <Trash2 size={15} />
                   </button>
@@ -141,10 +142,10 @@ export default function ServicesManager({ items, categories = [] }) {
           </span>
           <div>
             <p className="text-sm font-bold text-brand-ink">
-              {search ? "لا توجد نتائج مطابقة" : "لا توجد خدمات بعد"}
+              {search ? t("common.noResults") : t("services.emptyTitle")}
             </p>
             <p className="mt-1 text-xs text-brand-slate">
-              {search ? "جرّب كلمة بحث أخرى." : "ابدأ بإضافة أول خدمة عبر زر «خدمة جديدة»."}
+              {search ? t("common.tryDifferent") : t("services.emptyDesc")}
             </p>
           </div>
         </div>
@@ -153,19 +154,19 @@ export default function ServicesManager({ items, categories = [] }) {
       <AdminDialog
         open={formOpen}
         onClose={() => setFormOpen(false)}
-        title={editing ? "تعديل الخدمة" : "خدمة جديدة"}
-        subtitle={editing ? "حدّث بيانات الخدمة ثم احفظ." : "أضف خدمة جديدة لتظهر في الموقع."}
+        title={editing ? t("services.dialogEditTitle") : t("services.dialogCreateTitle")}
+        subtitle={editing ? t("services.dialogEditSubtitle") : t("services.dialogCreateSubtitle")}
         size="lg"
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
-            <AdminField label="الاسم (عربي)">
+            <AdminField label={t("services.fields.nameAr")}>
               <input name="name_ar" required defaultValue={editing?.name_ar} className="admin-input" />
             </AdminField>
-            <AdminField label="Name (English)">
+            <AdminField label={t("services.fields.nameEn")}>
               <input name="name_en" required defaultValue={editing?.name_en} className="admin-input" />
             </AdminField>
-            <AdminField label="التخصص">
+            <AdminField label={t("services.fields.category")}>
               <select name="category" defaultValue={editing?.category || "dentistry"} className="admin-select">
                 {categories.length ? (
                   categories.map((c) => (
@@ -175,41 +176,45 @@ export default function ServicesManager({ items, categories = [] }) {
                   ))
                 ) : (
                   <>
-                    <option value="dentistry">طب الأسنان / Dentistry</option>
-                    <option value="dermatology">الجلدية / Dermatology</option>
+                    <option value="dentistry">
+                      {t("services.categories.dentistry")} / Dentistry
+                    </option>
+                    <option value="dermatology">
+                      {t("services.categories.dermatology")} / Dermatology
+                    </option>
                   </>
                 )}
               </select>
             </AdminField>
-            <AdminField label="الأيقونة">
+            <AdminField label={t("services.fields.icon")}>
               <select name="icon" defaultValue={editing?.icon || "sparkles"} className="admin-select">
                 {Object.keys(ICONS).map((key) => (
                   <option key={key} value={key}>{key}</option>
                 ))}
               </select>
             </AdminField>
-            <AdminField label="مقتطف قصير (عربي)">
+            <AdminField label={t("services.fields.excerptAr")}>
               <input name="excerpt_ar" defaultValue={editing?.excerpt_ar} className="admin-input" />
             </AdminField>
-            <AdminField label="Short excerpt (English)">
+            <AdminField label={t("services.fields.excerptEn")}>
               <input name="excerpt_en" defaultValue={editing?.excerpt_en} className="admin-input" />
             </AdminField>
-            <AdminField label="الوصف الكامل (عربي)" className="sm:col-span-2">
+            <AdminField label={t("services.fields.fullDescAr")} className="sm:col-span-2">
               <textarea name="description_ar" defaultValue={editing?.description_ar} className="admin-textarea" />
             </AdminField>
-            <AdminField label="Full description (English)" className="sm:col-span-2">
+            <AdminField label={t("services.fields.fullDescEn")} className="sm:col-span-2">
               <textarea name="description_en" defaultValue={editing?.description_en} className="admin-textarea" />
             </AdminField>
-            <AdminField label="ترتيب العرض">
+            <AdminField label={t("services.fields.sortOrder")}>
               <input type="number" name="sort_order" defaultValue={editing?.sort_order ?? 0} className="admin-input" />
             </AdminField>
-            <AdminField label="ظهور الخدمة">
+            <AdminField label={t("services.fields.visibility")}>
               <label className="flex h-10 items-center gap-2 rounded-xl border border-brand-line bg-white px-3 text-sm font-semibold text-brand-ink">
                 <input type="checkbox" name="active" defaultChecked={editing?.active ?? true} className="h-4 w-4 accent-brand-teal" />
-                مفعّلة وظاهرة في الموقع
+                {t("services.fields.visible")}
               </label>
             </AdminField>
-            <AdminField label="صورة الخدمة (اختياري)" className="sm:col-span-2">
+            <AdminField label={t("services.fields.image")} className="sm:col-span-2">
               <ImageUploader name="image_url" defaultValue={editing?.image_url} folder="services" />
             </AdminField>
           </div>
@@ -220,11 +225,11 @@ export default function ServicesManager({ items, categories = [] }) {
 
           <div className="flex items-center justify-end gap-2 border-t border-brand-line pt-4">
             <button type="button" onClick={() => setFormOpen(false)} className="admin-btn-ghost">
-              إلغاء
+              {t("common.cancel")}
             </button>
             <button type="submit" disabled={pending} className="btn btn-primary">
               {pending && <Loader2 size={15} className="animate-spin" />}
-              {editing ? "حفظ التعديلات" : "إضافة الخدمة"}
+              {editing ? t("common.saveChanges") : t("services.add")}
             </button>
           </div>
         </form>
@@ -233,8 +238,8 @@ export default function ServicesManager({ items, categories = [] }) {
       <ConfirmDialog
         open={Boolean(deleting)}
         onClose={() => setDeleting(null)}
-        title="حذف الخدمة"
-        message={`هل أنت متأكد من حذف خدمة «${deleting?.name_ar}»؟ لا يمكن التراجع عن هذا الإجراء.`}
+        title={t("services.deleteTitle")}
+        message={t("services.deleteMessage", { name: deleting?.name_ar })}
         action={deleteService}
         id={deleting?.id}
       />

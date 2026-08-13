@@ -9,7 +9,7 @@ export default async function BeforeAfterSection() {
   const cases = await getBeforeAfterCases({ activeOnly: true });
 
   return (
-    <section className="section-y bg-paper" id="results">
+    <section className="section-y bg-brand-paper" id="results">
       <div className="container-brand">
         <SectionHeading eyebrow={t("eyebrow")} title={t("title")} subtitle={t("subtitle")} align="center" />
 

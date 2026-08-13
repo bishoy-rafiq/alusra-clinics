@@ -6,15 +6,18 @@ import PageHeader from "@/components/ui/PageHeader";
 import BookButton from "@/components/ui/BookButton";
 import { getServices, getServiceCategories } from "@/lib/data";
 import { getServiceImage } from "@/lib/service-image-map";
-import { breadcrumbSchema, localizedAlternates, SITE_URL } from "@/lib/seo";
+import { breadcrumbSchema, itemListSchema, localizedAlternates, pageOpenGraph, SITE_URL } from "@/lib/seo";
 
 export async function generateMetadata({ params }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "services" });
+  const title = t("title");
+  const description = t("subtitle");
   return {
-    title: t("title"),
-    description: t("subtitle"),
+    title,
+    description,
     alternates: localizedAlternates("/services", locale),
+    ...pageOpenGraph({ locale, title, description, path: "/services" }),
   };
 }
 
@@ -29,9 +32,19 @@ export default async function ServicesPage({ params }) {
     { name: t("title"), url: `${SITE_URL}/${locale}/services` },
   ]);
 
+  const itemList = itemListSchema(
+    services.map((service) => ({
+      name: locale === "ar" ? service.name_ar : service.name_en,
+      url: `${SITE_URL}/${locale}/services/${service.slug}`,
+    }))
+  );
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      {itemList.itemListElement.length > 0 && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }} />
+      )}
 
       <PageHeader eyebrow={t("eyebrow")} title={t("title")} subtitle={t("subtitle")} />
 

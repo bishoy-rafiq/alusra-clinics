@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { invalidateDataCache } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
 
 function readBeforeAfterForm(formData) {
@@ -26,6 +27,7 @@ export async function createBeforeAfterCase(formData) {
 
   revalidatePath("/admin/before-after");
   revalidatePath("/[locale]", "layout");
+  invalidateDataCache();
 }
 
 export async function updateBeforeAfterCase(formData) {
@@ -38,6 +40,7 @@ export async function updateBeforeAfterCase(formData) {
 
   revalidatePath("/admin/before-after");
   revalidatePath("/[locale]", "layout");
+  invalidateDataCache();
 }
 
 export async function deleteBeforeAfterCase(formData) {
@@ -47,4 +50,5 @@ export async function deleteBeforeAfterCase(formData) {
 
   revalidatePath("/admin/before-after");
   revalidatePath("/[locale]", "layout");
+  invalidateDataCache();
 }

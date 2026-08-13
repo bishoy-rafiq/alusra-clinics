@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { invalidateDataCache } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
 
 function slugify(text) {
@@ -31,13 +32,14 @@ function readServiceForm(formData) {
 export async function createService(formData) {
   const supabase = await createClient();
   const values = readServiceForm(formData);
-  const slug = `${slugify(values.name_en || values.name_ar)}`;
+  const slug = `${slugify(values.name_en || values.name_ar)}-${Date.now().toString(36)}`;
 
   const { error } = await supabase.from("services").insert({ ...values, slug });
   if (error) throw new Error(error.message);
 
   revalidatePath("/admin/services");
   revalidatePath("/[locale]", "layout");
+  invalidateDataCache();
 }
 
 export async function updateService(formData) {
@@ -50,6 +52,7 @@ export async function updateService(formData) {
 
   revalidatePath("/admin/services");
   revalidatePath("/[locale]", "layout");
+  invalidateDataCache();
 }
 
 export async function deleteService(formData) {
@@ -59,4 +62,5 @@ export async function deleteService(formData) {
 
   revalidatePath("/admin/services");
   revalidatePath("/[locale]", "layout");
+  invalidateDataCache();
 }

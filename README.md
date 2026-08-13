@@ -56,6 +56,9 @@ time from `/admin`.
 - Service pages with per-service before/after results
 - WhatsApp booking everywhere (`wa.me` deep links with context-aware, localized
   messages)
+- **Offer subscription form** (name, email, phone, 1–2 areas of interest) on the
+  homepage hero banner and the `/offers` page — leads are saved to Supabase
+  **and** appended to a Google Sheet
 - Sticky mobile booking bar and floating WhatsApp button
 - Demo-content fallback so the site is previewable before Supabase is configured
 
@@ -66,6 +69,9 @@ time from `/admin`.
 - Manage reviews, clinic info, WhatsApp number, social links, and About text
 - Image upload to Supabase Storage (`media` bucket)
 - Dashboard with stats, quick actions, and site preview links
+- **Subscribers (`/admin/subscribers`)** — browse offer subscribers, send an
+  offer to each one via WhatsApp with a pre-filled message (or copy all
+  `wa.me` links for a WhatsApp broadcast)
 
 **SEO & AEO**
 - Locale-aware canonical + `hreflang` on every page
@@ -136,7 +142,7 @@ alusra-clinics/
 │   │   ├── Footer.js
 │   │   ├── WhatsAppFloat.js       # Floating WhatsApp button
 │   │   ├── StickyBookBar.js       # Sticky bottom "Book" bar on mobile
-│   │   └── LanguageSwitch.js
+│   │   └── StickyBookBar.js       # Sticky bottom "Book" bar on mobile
 │   ├── ui/
 │   │   ├── BookButton.js          # WhatsApp booking button (service/offer/doctor)
 │   │   ├── PageHeader.js          # Page title/eyebrow/subtitle header
@@ -156,6 +162,7 @@ alusra-clinics/
 │       ├── ServicesManager.js     # List + create/edit/delete services
 │       ├── DoctorsManager.js
 │       ├── OffersManager.js
+│       ├── AdminLanguageToggle.js # AR/EN pill toggle (cookie for admin, URL for public)
 │       └── BeforeAfterManager.js
 ├── i18n/
 │   ├── routing.js                 # Locales, default locale, pathnames
@@ -213,8 +220,8 @@ alusra-clinics/
 ### Homepage sections (in render order)
 
 1. **Hero** — headline, WhatsApp / Call / Get-Directions CTAs, clinic stats
-2. **TrustStrip** — insurance accepted, sterilized tools, modern technology,
-   certified specialists, 20+ years, free consultation
+2. **TrustStrip** — sterilized tools, modern technology, certified
+   specialists, 20+ years, guest satisfaction
 3. **OffersSection** — latest offers (link to `/offers`)
 4. **ServicesSection** — grouped by specialty
 5. **BeforeAfterSection** — drag-to-compare results
@@ -283,6 +290,7 @@ This is why the site renders immediately with no backend.
 | `testimonials` | Manually curated reviews (fallback when Places API is off) |
 | `site_settings` | Single row (`id = 1`): clinic identity, contact, socials, About |
 | `before_after_cases` | Bilingual title/description + before & after images, linked service |
+| `offer_subscribers` | Offer-lead subscriptions: name, email, phone, interests (`text[]`); anyone may insert, only admins read/delete |
 
 ### Security
 
@@ -398,7 +406,45 @@ NEXT_PUBLIC_WHATSAPP_NUMBER=966137233900
 # Optional: live Google Maps reviews (Places API New)
 GOOGLE_PLACES_API_KEY=...
 GOOGLE_PLACE_ID=...
+
+# Optional: append offer-subscription leads to a Google Sheet
+# Deploy a Google Apps Script web app and paste its URL here (see below)
+GOOGLE_SHEETS_WEBHOOK_URL=...
 ```
+
+### Offer leads → Google Sheets
+
+Each submission of the offer-subscription form POSTs a JSON row to
+`GOOGLE_SHEETS_WEBHOOK_URL`. To set this up:
+
+1. Create a Google Sheet, then open **Extensions → Apps Script**.
+2. Replace the script with a `doPost` that appends a row, e.g.:
+
+   ```js
+   const SHEET_NAME = "Leads";
+   function doPost(e) {
+     const d = JSON.parse(e.postData.contents);
+     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME) ||
+                   SpreadsheetApp.getActiveSpreadsheet().insertSheet(SHEET_NAME);
+     sheet.appendRow([d.name, d.email, d.phone, (d.interests || []).join(", "),
+                      d.consent ? "نعم" : "لا", d.created_at]);
+     return ContentService.createTextOutput(JSON.stringify({ ok: true }))
+       .setMimeType(ContentService.MimeType.JSON);
+   }
+   ```
+
+3. **Deploy → New deployment → Web app**, set *Execute as* to **Me** and *Who
+   has access* to **Anyone**, then copy the `/exec` URL into
+   `GOOGLE_SHEETS_WEBHOOK_URL`.
+
+Subscriptions also land in the `offer_subscribers` Supabase table (when
+configured) and are visible in `/admin/subscribers`, where you can send an
+offer to each lead via WhatsApp, copy all `wa.me` links for a broadcast, or use
+**Send one by one** to step through every subscriber: each click opens that
+subscriber's WhatsApp chat with the message pre-filled, so you just tap send
+and continue. No Meta API credentials or approved templates are needed — it
+uses plain `wa.me` links. Phones are normalized automatically
+(`05xxxxxxxx` → `9665xxxxxxxx`).
 
 > Without Supabase vars the public site still works on demo content. Without the
 > Google vars, reviews fall back to the ones you add manually in `/admin`.

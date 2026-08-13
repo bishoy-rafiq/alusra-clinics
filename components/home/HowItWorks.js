@@ -9,7 +9,7 @@ export default async function HowItWorks() {
   const locale = await getLocale();
   const t = await getTranslations("how");
   const settings = await getSettings();
-  const waLink = buildWhatsAppLink({ locale, kind: "general" });
+  const waLink = buildWhatsAppLink({ locale, kind: "general", number: settings.whatsapp_number });
 
   const steps = [
     { icon: ListChecks, title: t("step1Title"), desc: t("step1Desc") },

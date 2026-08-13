@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { ImagePlus, Loader2, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 export default function ImageUploader({ name, defaultValue, folder = "uploads" }) {
+  const t = useTranslations("admin");
   const [url, setUrl] = useState(defaultValue || "");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
@@ -24,7 +26,7 @@ export default function ImageUploader({ name, defaultValue, folder = "uploads" }
       const { data } = supabase.storage.from("media").getPublicUrl(path);
       setUrl(data.publicUrl);
     } catch {
-      setError("تعذّر رفع الصورة. تأكد من إعداد Supabase Storage (bucket: media).");
+      setError("uploadError");
     } finally {
       setUploading(false);
     }
@@ -40,6 +42,7 @@ export default function ImageUploader({ name, defaultValue, folder = "uploads" }
             type="button"
             onClick={() => setUrl("")}
             className="absolute end-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-white"
+            aria-label={t("common.close")}
           >
             <X size={14} />
           </button>
@@ -47,11 +50,11 @@ export default function ImageUploader({ name, defaultValue, folder = "uploads" }
       ) : (
         <label className="flex h-40 w-40 cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-brand-line text-brand-slate transition hover:border-brand-aqua hover:text-brand-aqua">
           {uploading ? <Loader2 size={22} className="animate-spin" /> : <ImagePlus size={22} />}
-          <span className="text-xs font-semibold">{uploading ? "جاري الرفع..." : "رفع صورة"}</span>
+          <span className="text-xs font-semibold">{uploading ? t("image.uploading") : t("image.upload")}</span>
           <input type="file" accept="image/*" className="hidden" onChange={handleChange} disabled={uploading} />
         </label>
       )}
-      {error && <p className="mt-2 text-xs font-medium text-red-600">{error}</p>}
+      {error === "uploadError" && <p className="mt-2 text-xs font-medium text-red-600">{t("image.uploadError")}</p>}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { invalidateDataCache } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
 
 function slugify(text) {
@@ -36,6 +37,7 @@ export async function createDoctor(formData) {
 
   revalidatePath("/admin/doctors");
   revalidatePath("/[locale]", "layout");
+  invalidateDataCache();
 }
 
 export async function updateDoctor(formData) {
@@ -48,6 +50,7 @@ export async function updateDoctor(formData) {
 
   revalidatePath("/admin/doctors");
   revalidatePath("/[locale]", "layout");
+  invalidateDataCache();
 }
 
 export async function deleteDoctor(formData) {
@@ -57,4 +60,5 @@ export async function deleteDoctor(formData) {
 
   revalidatePath("/admin/doctors");
   revalidatePath("/[locale]", "layout");
+  invalidateDataCache();
 }

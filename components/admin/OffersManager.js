@@ -2,6 +2,7 @@
 
 import { useMemo, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import { Plus, Pencil, Trash2, Tag, Calendar, Loader2, Inbox } from "lucide-react";
 import AdminDialog from "./AdminDialog";
 import ConfirmDialog from "./ConfirmDialog";
@@ -13,6 +14,8 @@ import { formatDate } from "@/lib/format";
 import { createOffer, updateOffer, deleteOffer } from "@/app/admin/(dashboard)/offers/actions";
 
 export default function OffersManager({ items }) {
+  const t = useTranslations("admin");
+  const locale = useLocale();
   const router = useRouter();
   const [search, setSearch] = useState("");
   const [formOpen, setFormOpen] = useState(false);
@@ -59,8 +62,8 @@ export default function OffersManager({ items }) {
       } catch (err) {
         setError(
           err?.message
-            ? `تعذّر الحفظ: ${err.message}`
-            : "تعذّر الحفظ. تأكد من اتصال Supabase وحاول مرة أخرى."
+            ? t("common.saveFailed", { message: err.message })
+            : t("common.saveFailedGeneric")
         );
       } finally {
         submittingRef.current = false;
@@ -76,16 +79,16 @@ export default function OffersManager({ items }) {
         <SearchBox
           value={search}
           onChange={setSearch}
-          placeholder="ابحث في العروض..."
+          placeholder={t("offers.search")}
         />
         <button onClick={openCreate} className="btn btn-primary shrink-0">
-          <Plus size={16} /> عرض جديد
+          <Plus size={16} /> {t("offers.add")}
         </button>
       </div>
 
       <div className="flex items-center gap-2 text-xs font-semibold text-brand-slate">
         <span className="rounded-full bg-brand-teal px-2.5 py-1 text-white">{count}</span>
-        عرض
+        {t("offers.countLabel")}
       </div>
 
       <div className="space-y-3">
@@ -108,7 +111,7 @@ export default function OffersManager({ items }) {
                 <StatusBadge active={offer.active} />
                 {offer.valid_until && (
                   <span className="flex items-center gap-1.5 text-xs text-brand-slate">
-                    <Calendar size={12} /> ساري حتى {formatDate(offer.valid_until)}
+                    <Calendar size={12} /> {t("offers.validUntil", { date: formatDate(offer.valid_until, locale) })}
                   </span>
                 )}
               </div>
@@ -117,16 +120,16 @@ export default function OffersManager({ items }) {
               <button
                 onClick={() => openEdit(offer)}
                 className="admin-icon-btn text-brand-teal hover:bg-brand-mist"
-                title="تعديل"
-                aria-label={`تعديل ${offer.title_ar}`}
+                title={t("common.edit")}
+                aria-label={t("common.editLabel", { name: offer.title_ar })}
               >
                 <Pencil size={16} />
               </button>
               <button
                 onClick={() => setDeleting(offer)}
                 className="admin-icon-btn text-red-500 hover:bg-red-50"
-                title="حذف"
-                aria-label={`حذف ${offer.title_ar}`}
+                title={t("common.delete")}
+                aria-label={t("common.deleteLabel", { name: offer.title_ar })}
               >
                 <Trash2 size={16} />
               </button>
@@ -141,10 +144,10 @@ export default function OffersManager({ items }) {
             </span>
             <div>
               <p className="text-sm font-bold text-brand-ink">
-                {search ? "لا توجد نتائج مطابقة" : "لا توجد عروض بعد"}
+                {search ? t("common.noResults") : t("offers.emptyTitle")}
               </p>
               <p className="mt-1 text-xs text-brand-slate">
-                {search ? "جرّب كلمة بحث أخرى." : "ابدأ بإضافة أول عرض عبر زر «عرض جديد»."}
+                {search ? t("common.tryDifferent") : t("offers.emptyDesc")}
               </p>
             </div>
           </div>
@@ -154,40 +157,40 @@ export default function OffersManager({ items }) {
       <AdminDialog
         open={formOpen}
         onClose={() => setFormOpen(false)}
-        title={editing ? "تعديل العرض" : "عرض جديد"}
-        subtitle={editing ? "حدّث بيانات العرض ثم احفظ." : "أضف عرضاً جديداً ليظهر في الموقع."}
+        title={editing ? t("offers.dialogEditTitle") : t("offers.dialogCreateTitle")}
+        subtitle={editing ? t("offers.dialogEditSubtitle") : t("offers.dialogCreateSubtitle")}
         size="lg"
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
-            <AdminField label="العنوان (عربي)">
+            <AdminField label={t("offers.fields.titleAr")}>
               <input name="title_ar" required defaultValue={editing?.title_ar} className="admin-input" />
             </AdminField>
-            <AdminField label="Title (English)">
+            <AdminField label={t("offers.fields.titleEn")}>
               <input name="title_en" required defaultValue={editing?.title_en} className="admin-input" />
             </AdminField>
-            <AdminField label="الوصف (عربي)" className="sm:col-span-2">
+            <AdminField label={t("offers.fields.descAr")} className="sm:col-span-2">
               <textarea name="description_ar" defaultValue={editing?.description_ar} className="admin-textarea" />
             </AdminField>
-            <AdminField label="Description (English)" className="sm:col-span-2">
+            <AdminField label={t("offers.fields.descEn")} className="sm:col-span-2">
               <textarea name="description_en" defaultValue={editing?.description_en} className="admin-textarea" />
             </AdminField>
-            <AdminField label="وسم (عربي)" hint="مثال: خصم 20٪">
+            <AdminField label={t("offers.fields.badgeAr")} hint={t("offers.fields.badgeHint")}>
               <input name="badge_ar" defaultValue={editing?.badge_ar} className="admin-input" />
             </AdminField>
-            <AdminField label="Badge (English)">
+            <AdminField label={t("offers.fields.badgeEn")}>
               <input name="badge_en" defaultValue={editing?.badge_en} className="admin-input" />
             </AdminField>
-            <AdminField label="ساري حتى (اختياري)">
+            <AdminField label={t("offers.fields.validUntil")}>
               <input type="date" name="valid_until" defaultValue={editing?.valid_until?.slice(0, 10)} className="admin-input" />
             </AdminField>
-            <AdminField label="ظهور العرض">
+            <AdminField label={t("offers.fields.visibility")}>
               <label className="flex h-10 items-center gap-2 rounded-xl border border-brand-line bg-white px-3 text-sm font-semibold text-brand-ink">
                 <input type="checkbox" name="active" defaultChecked={editing?.active ?? true} className="h-4 w-4 accent-brand-teal" />
-                مفعّل وظاهر في الموقع
+                {t("offers.fields.visible")}
               </label>
             </AdminField>
-            <AdminField label="صورة العرض (اختياري)" className="sm:col-span-2">
+            <AdminField label={t("offers.fields.image")} className="sm:col-span-2">
               <ImageUploader name="image_url" defaultValue={editing?.image_url} folder="offers" />
             </AdminField>
           </div>
@@ -198,11 +201,11 @@ export default function OffersManager({ items }) {
 
           <div className="flex items-center justify-end gap-2 border-t border-brand-line pt-4">
             <button type="button" onClick={() => setFormOpen(false)} className="admin-btn-ghost">
-              إلغاء
+              {t("common.cancel")}
             </button>
             <button type="submit" disabled={pending} className="btn btn-primary">
               {pending && <Loader2 size={15} className="animate-spin" />}
-              {editing ? "حفظ التعديلات" : "إضافة العرض"}
+              {editing ? t("common.saveChanges") : t("offers.add")}
             </button>
           </div>
         </form>
@@ -211,8 +214,8 @@ export default function OffersManager({ items }) {
       <ConfirmDialog
         open={Boolean(deleting)}
         onClose={() => setDeleting(null)}
-        title="حذف العرض"
-        message={`هل أنت متأكد من حذف عرض «${deleting?.title_ar}»؟ لا يمكن التراجع عن هذا الإجراء.`}
+        title={t("offers.deleteTitle")}
+        message={t("offers.deleteMessage", { name: deleting?.title_ar })}
         action={deleteOffer}
         id={deleting?.id}
       />

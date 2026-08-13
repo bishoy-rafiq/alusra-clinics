@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { X } from "lucide-react";
 
 export default function AdminDialog({
@@ -11,6 +12,7 @@ export default function AdminDialog({
   children,
   size = "md",
 }) {
+  const t = useTranslations("admin");
   useEffect(() => {
     if (!open) return;
     function onKey(e) {
@@ -50,7 +52,7 @@ export default function AdminDialog({
           </div>
           <button
             onClick={onClose}
-            aria-label="إغلاق"
+            aria-label={t("common.close")}
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-brand-slate shadow-sm ring-1 ring-brand-line transition hover:bg-brand-ink hover:text-white"
           >
             <X size={16} />

@@ -33,14 +33,15 @@ export default async function ReviewsSection() {
   const [live, manual] = await Promise.all([getGooglePlaceReviews(locale), getTestimonials()]);
 
   const googleReviews = live?.reviews || [];
-  const reviews = googleReviews.length
+  const reviews = (googleReviews.length
     ? googleReviews
     : manual.map((m) => ({
         author: m.author_name,
         rating: m.rating,
         text: locale === "ar" ? m.text_ar : m.text_en,
         avatar: m.avatar_url,
-      }));
+      }))
+  ).filter((r) => r.rating === 5);
 
   return (
     <section className="section-y bg-brand-mist" id="reviews">
@@ -48,7 +49,7 @@ export default async function ReviewsSection() {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHeading eyebrow={t("eyebrow")} title={t("title")} />
           {settings?.maps_url && (
-            <a href={settings.maps_url} target="_blank" rel="noopener noreferrer" className="btn btn-outline">
+            <a href={settings.maps_url} target="_blank" rel="noopener noreferrer" className="btn btn-outline btn--wrap">
               {t("viewOnGoogle")} <ExternalLink size={15} />
             </a>
           )}
@@ -85,7 +86,7 @@ export default async function ReviewsSection() {
                 <div className="mt-5 flex items-center gap-3 border-t border-brand-line pt-4">
                   {r.avatar ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={r.avatar} alt={r.author} className="h-9 w-9 rounded-full object-cover ring-2 ring-brand-mist" />
+                    <img src={r.avatar} alt={r.author} referrerPolicy="no-referrer" className="h-9 w-9 rounded-full object-cover ring-2 ring-brand-mist" />
                   ) : (
                     <span className="icon-chip flex h-9 w-9 items-center justify-center rounded-full bg-gradient-brand text-xs font-bold text-white">
                       {(r.author || "?")[0]}

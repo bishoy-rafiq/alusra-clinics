@@ -2,11 +2,21 @@ import { getTranslations, getLocale } from "next-intl/server";
 import { ChevronDown, MessageCircle } from "lucide-react";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
-import { getSettings } from "@/lib/data";
+import { getSettings, getFaqs } from "@/lib/data";
 
 export async function getFaqItems() {
   const t = await getTranslations("faq");
-  return Array.from({ length: 5 }, (_, i) => ({
+  const locale = await getLocale();
+  const faqs = await getFaqs();
+
+  if (faqs.length) {
+    return faqs.map((f) => ({
+      question: locale === "ar" ? f.question_ar : f.question_en,
+      answer: locale === "ar" ? f.answer_ar : f.answer_en,
+    }));
+  }
+
+  return Array.from({ length: 3 }, (_, i) => ({
     question: t(`q${i + 1}`),
     answer: t(`a${i + 1}`),
   }));
@@ -16,7 +26,7 @@ export default async function FaqSection() {
   const locale = await getLocale();
   const t = await getTranslations("faq");
   const settings = await getSettings();
-  const waLink = buildWhatsAppLink({ locale, kind: "general" });
+  const waLink = buildWhatsAppLink({ locale, kind: "general", number: settings.whatsapp_number });
   const items = await getFaqItems();
 
   return (

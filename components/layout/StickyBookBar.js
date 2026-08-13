@@ -8,7 +8,7 @@ import { buildWhatsAppLink } from "@/lib/whatsapp";
 export default function StickyBookBar({ settings }) {
   const locale = useLocale();
   const t = useTranslations("nav");
-  const waLink = buildWhatsAppLink({ locale, kind: "general" });
+  const waLink = buildWhatsAppLink({ locale, kind: "general", number: settings?.whatsapp_number });
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-brand-line bg-white/95 px-3 py-2.5 backdrop-blur-md lg:hidden" style={{ paddingBottom: "calc(0.625rem + env(safe-area-inset-bottom))" }}>

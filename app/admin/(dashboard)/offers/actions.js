@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { invalidateDataCache } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
 
 function slugify(text) {
@@ -36,6 +37,7 @@ export async function createOffer(formData) {
 
   revalidatePath("/admin/offers");
   revalidatePath("/[locale]", "layout");
+  invalidateDataCache();
 }
 
 export async function updateOffer(formData) {
@@ -48,6 +50,7 @@ export async function updateOffer(formData) {
 
   revalidatePath("/admin/offers");
   revalidatePath("/[locale]", "layout");
+  invalidateDataCache();
 }
 
 export async function deleteOffer(formData) {
@@ -57,4 +60,5 @@ export async function deleteOffer(formData) {
 
   revalidatePath("/admin/offers");
   revalidatePath("/[locale]", "layout");
+  invalidateDataCache();
 }
