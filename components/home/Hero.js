@@ -18,21 +18,21 @@ export default function Hero({ settings }) {
     <section className="relative overflow-hidden" id="home">
       {/* Background photo: clinic building on phone, hero on big screens */}
       <div className="absolute inset-0">
-        <Image
+        {/* <Image
           src="/images/alusra-clinics.jpeg"
           alt=""
           fill
           priority
           sizes="100vw"
           className="object-cover md:hidden"
-        />
+        /> */}
         <Image
           src="/images/hero.jpeg"
           alt=""
           fill
           priority
           sizes="100vw"
-          className="hidden object-cover md:block"
+          className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-hero" />
         <div className="absolute inset-0 bg-brand-ink/45 md:hidden" />
