@@ -49,7 +49,7 @@ export default async function Footer({ settings, services }) {
 
       <div className="container-brand relative grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr_1fr] lg:py-20">
         <div className="space-y-5">
-          <Image src="/images/logo-light.png" alt={clinicName || "Alusra Clinics"} width={136} height={46} className="h-10 w-auto" />
+          <Image src="/images/logo-light.png" alt={clinicName || "Alusra Clinics"} width={190} height={64} className="h-14 w-auto" />
           <p className="max-w-xs text-sm leading-relaxed text-white/55">{t("aboutText")}</p>
           <div className="space-y-3 text-sm">
             <a href={`mailto:${settings?.email}`} className="group flex items-center gap-3 text-white/70 transition hover:text-brand-aqua">

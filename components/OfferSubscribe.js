@@ -2,13 +2,14 @@
 
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { Loader2, BadgeCheck, Send, User, Mail, Phone, Sparkles } from "lucide-react";
+import { Loader2, BadgeCheck, Send, User, Mail, Phone, Sparkles, Check } from "lucide-react";
 import { subscribeToOffers } from "@/lib/actions/offerSubscribe";
 
 const INTERESTS = [
   { value: "dentistry", labelKey: "interestDentistry" },
   { value: "dermatology", labelKey: "interestDermatology" },
 ];
+const BOTH = "both";
 
 export default function OfferSubscribe({ variant = "card" }) {
   const t = useTranslations("subscribe");
@@ -31,9 +32,16 @@ export default function OfferSubscribe({ variant = "card" }) {
   const labelCls = "mb-1.5 block text-xs font-bold text-brand-ink";
 
   function toggleInterest(value) {
-    setSelected((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
-    );
+    if (value === BOTH) {
+      setSelected((prev) =>
+        prev.length === 2 ? [] : ["dentistry", "dermatology"]
+      );
+      return;
+    }
+    setSelected((prev) => {
+      const all = ["dentistry", "dermatology"].includes(value) ? [value] : [value];
+      return prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, ...all].slice(0, 2);
+    });
   }
 
   function handleSubmit(e) {
@@ -47,6 +55,8 @@ export default function OfferSubscribe({ variant = "card" }) {
     }
     const form = e.currentTarget;
     const fd = new FormData(form);
+    fd.delete("interests");
+    selected.forEach((value) => fd.append("interests", value));
     startTransition(async () => {
       try {
         const res = await subscribeToOffers(fd);
@@ -66,7 +76,7 @@ export default function OfferSubscribe({ variant = "card" }) {
   }
 
   const chipCls = (active) =>
-    `flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-bold transition ${
+    `flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-bold transition cursor-pointer ${
       active
         ? "border-brand-teal bg-brand-teal text-white"
         : "border-brand-line bg-white text-brand-ink hover:border-brand-aqua"
@@ -133,22 +143,39 @@ export default function OfferSubscribe({ variant = "card" }) {
             {INTERESTS.map((interest) => {
               const active = selected.includes(interest.value);
               return (
-                <label key={interest.value} className={chipCls(active)}>
-                  <input
-                    type="checkbox"
-                    name="interests"
-                    value={interest.value}
-                    checked={active}
-                    onChange={() => toggleInterest(interest.value)}
-                    className="sr-only"
-                  />
+                <button
+                  key={interest.value}
+                  type="button"
+                  onClick={() => toggleInterest(interest.value)}
+                  aria-pressed={active}
+                  className={chipCls(active)}
+                >
                   <span
-                    className={`h-2 w-2 rounded-full ${active ? "bg-current" : "bg-brand-line"}`}
-                  />
+                    className={`flex h-4 w-4 items-center justify-center rounded-full border transition ${
+                      active ? "border-white/70" : "border-brand-line"
+                    }`}
+                  >
+                    {active && <Check size={10} strokeWidth={3.5} />}
+                  </span>
                   {t(interest.labelKey)}
-                </label>
+                </button>
               );
             })}
+            <button
+              type="button"
+              onClick={() => toggleInterest(BOTH)}
+              aria-pressed={selected.length === 2}
+              className={chipCls(selected.length === 2)}
+            >
+              <span
+                className={`flex h-4 w-4 items-center justify-center rounded-full border transition ${
+                  selected.length === 2 ? "border-white/70" : "border-brand-line"
+                }`}
+              >
+                {selected.length === 2 && <Check size={10} strokeWidth={3.5} />}
+              </span>
+              {t("interestBoth")}
+            </button>
           </div>
         </div>
 

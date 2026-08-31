@@ -288,6 +288,18 @@ html[lang="ar"] .eyebrow {
 }
 
 /* ==========================================================================
+   Nav dropdown — invisible bridge between trigger and panel
+   ========================================================================== */
+.nav-dropdown::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 100%;
+  width: 100%;
+  height: 0.5rem;
+}
+
+/* ==========================================================================
    Scroll reveal (content visible by default — enhanced when JS runs)
    ========================================================================== */
 [data-reveal] {

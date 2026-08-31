@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
@@ -12,15 +12,27 @@ import { getSocialLinks } from "@/lib/socials";
 
 function NavDropdown({ label, items, hrefBase, pathname }) {
   const [open, setOpen] = useState(false);
+  const timer = useRef(null);
   const active = (items || []).some((i) => pathname === `${hrefBase}/${i.slug}`);
+
+  const show = () => {
+    clearTimeout(timer.current);
+    setOpen(true);
+  };
+
+  const hide = () => {
+    timer.current = setTimeout(() => setOpen(false), 200);
+  };
+
+  useEffect(() => () => clearTimeout(timer.current), []);
 
   if (!items?.length) return null;
 
   return (
     <div
-      className="relative"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      className="nav-dropdown relative"
+      onMouseEnter={show}
+      onMouseLeave={hide}
     >
       <button
         type="button"
@@ -31,27 +43,29 @@ function NavDropdown({ label, items, hrefBase, pathname }) {
         aria-expanded={open}
       >
         {label}
-        <ChevronDown size={15} className={`transition-transform ${open ? "rotate-180" : ""}`} />
+        <ChevronDown size={15} className={`transition-transform duration-150 ${open ? "rotate-180" : ""}`} />
       </button>
-      {open && (
-        <div className="absolute start-0 top-full z-40 mt-2 min-w-[250px] overflow-hidden rounded-2xl border border-brand-line bg-white p-2 shadow-[var(--shadow-lifted)]">
-          <div className="rounded-xl bg-brand-mist/70 px-3.5 py-2 text-xs font-bold uppercase tracking-wide text-brand-slate">
-            {label}
-          </div>
-          {items.map((item) => (
-            <Link
-              key={item.slug}
-              href={`${hrefBase}/${item.slug}`}
-              className={`mt-1 flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-sm font-semibold transition hover:bg-brand-mist hover:text-brand-teal ${
-                pathname === `${hrefBase}/${item.slug}` ? "text-brand-teal" : "text-brand-ink"
-              }`}
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-brand-gold" />
-              {item.name}
-            </Link>
-          ))}
+      <div
+        className={`absolute start-0 top-full z-40 min-w-[250px] rounded-2xl border border-brand-line bg-white p-2 shadow-[var(--shadow-lifted)] transition-all duration-150 ${
+          open ? "pointer-events-auto translate-y-0 opacity-100" : "pointer-events-none translate-y-1 opacity-0"
+        }`}
+      >
+        <div className="rounded-xl bg-brand-mist/70 px-3.5 py-2 text-xs font-bold uppercase tracking-wide text-brand-slate">
+          {label}
         </div>
-      )}
+        {items.map((item) => (
+          <Link
+            key={item.slug}
+            href={`${hrefBase}/${item.slug}`}
+            className={`mt-1 flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-sm font-semibold transition hover:bg-brand-mist hover:text-brand-teal ${
+              pathname === `${hrefBase}/${item.slug}` ? "text-brand-teal" : "text-brand-ink"
+            }`}
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-brand-gold" />
+            {item.name}
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
@@ -150,7 +164,7 @@ export default function Header({ settings, services }) {
             : "border-brand-line/70 bg-white/90 backdrop-blur-md"
         }`}
       >
-        <div className="container-brand flex h-[4.5rem] items-center justify-between gap-4">
+        <div className="container-brand flex h-[5.5rem] items-center justify-between gap-4">
           <Link href="/" className="flex shrink-0 items-center gap-2">
             <Image
               src="/images/logo.png"
@@ -158,7 +172,7 @@ export default function Header({ settings, services }) {
               width={300}
               height={200}
               priority
-              className="h-10 w-auto"
+              className="h-14 w-auto"
             />
           </Link>
 
@@ -190,7 +204,7 @@ export default function Header({ settings, services }) {
 
         {/* Mobile slide-in menu */}
         <div
-          className={`fixed inset-0 top-[4.5rem] z-40 transition lg:hidden ${
+          className={`fixed inset-0 top-[5.5rem] z-40 transition lg:hidden ${
             mobileOpen ? "pointer-events-auto" : "pointer-events-none"
           }`}
         >
@@ -201,7 +215,7 @@ export default function Header({ settings, services }) {
             onClick={() => setMobileOpen(false)}
           />
           <div
-            className={`absolute start-0 top-0 flex h-[calc(100dvh-4.5rem)] w-[88%] max-w-sm flex-col overflow-y-auto border-e border-brand-line bg-white shadow-[var(--shadow-lifted)] transition-transform duration-300`}
+            className={`absolute start-0 top-0 flex h-[calc(100dvh-5.5rem)] w-[88%] max-w-sm flex-col overflow-y-auto border-e border-brand-line bg-white shadow-[var(--shadow-lifted)] transition-transform duration-300`}
             style={{
               transform: mobileOpen
                 ? "translateX(0)"
