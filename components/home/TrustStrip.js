@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { Sparkles, Stethoscope, Award, HeartHandshake, BadgeCheck } from "lucide-react";
+import { Sparkles, Stethoscope, Award, HeartHandshake, BadgeCheck, CalendarCheck, Clock3 } from "lucide-react";
 
 export default async function TrustStrip() {
   const t = await getTranslations("trust");
@@ -10,6 +10,8 @@ export default async function TrustStrip() {
     { icon: <BadgeCheck size={18} className="text-brand-gold" />, label: t("specialists") },
     { icon: <Award size={18} className="text-brand-gold" />, label: t("experience") },
     { icon: <HeartHandshake size={18} className="text-brand-gold" />, label: t("satisfaction") },
+    { icon: <CalendarCheck size={18} className="text-brand-gold" />, label: t("followup") },
+    { icon: <Clock3 size={18} className="text-brand-gold" />, label: t("duration") },
   ];
 
   return (
