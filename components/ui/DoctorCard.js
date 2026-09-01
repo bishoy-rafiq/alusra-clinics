@@ -1,6 +1,7 @@
 import Image from "next/image";
-import { Stethoscope } from "lucide-react";
+import { Stethoscope, ArrowLeft, ArrowRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import BookButton from "@/components/ui/BookButton";
 
 export default async function DoctorCard({ doctor, locale, compact = false }) {
@@ -9,12 +10,15 @@ export default async function DoctorCard({ doctor, locale, compact = false }) {
   const specialty = locale === "ar" ? doctor.specialty_ar : doctor.specialty_en;
   const bio = locale === "ar" ? doctor.bio_ar : doctor.bio_en;
   const initial = (n = "") => n.replace(/^د\.?\s*/, "").charAt(0) || "؟";
+  const Arrow = locale === "ar" ? ArrowRight : ArrowLeft;
 
   return (
     <div
       data-reveal="bottom"
       className="revealed group relative flex min-h-[26rem] flex-col overflow-hidden rounded-[1.5rem] border border-brand-line bg-brand-teal shadow-card transition-all duration-300 hover:-translate-y-2 hover:shadow-[var(--shadow-lifted)]"
     >
+      <Link href={`/doctors/${doctor.slug}`} className="absolute inset-0 z-10" aria-label={name} />
+
       {doctor.photo_url ? (
         <Image
           src={doctor.photo_url}
@@ -37,8 +41,14 @@ export default async function DoctorCard({ doctor, locale, compact = false }) {
         <span className="max-w-[10rem] truncate">{specialty}</span>
       </div>
 
-      <div className="relative z-10 mt-auto flex flex-col gap-1.5 p-5 text-white md:p-6">
-        <h3 className="font-display text-xl font-bold leading-snug">{name}</h3>
+      <div className="relative z-20 mt-auto flex flex-col gap-1.5 p-5 text-white md:p-6">
+        <Link
+          href={`/doctors/${doctor.slug}`}
+          className="inline-flex items-start gap-2 underline-offset-4 transition-colors hover:text-brand-gold group-hover:underline"
+        >
+          <h3 className="font-display text-xl font-bold leading-snug transition-colors">{name}</h3>
+          <Arrow size={18} className="mt-1 shrink-0 text-brand-gold" />
+        </Link>
         <p className="text-sm font-semibold text-brand-gold">{specialty}</p>
         {!compact && bio && (
           <p className="mt-2 line-clamp-3 whitespace-pre-line text-sm leading-relaxed text-white/85">{bio}</p>
@@ -51,6 +61,12 @@ export default async function DoctorCard({ doctor, locale, compact = false }) {
             variant="gold"
             className="w-full"
           />
+          <Link
+            href={`/doctors/${doctor.slug}`}
+            className="mt-3 block text-center text-xs font-bold text-white/90 underline underline-offset-4 transition-colors hover:text-brand-gold"
+          >
+            {t("details")} <Arrow size={13} className="inline" />
+          </Link>
         </div>
       </div>
     </div>

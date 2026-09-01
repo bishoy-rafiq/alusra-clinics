@@ -186,11 +186,30 @@ export default function BeforeAfterManager({ items, services = [] }) {
                 className="admin-select"
               >
                 <option value="">{t("beforeAfter.fields.noLink")}</option>
-                {services.map((service) => (
-                  <option key={service.id} value={service.id}>
-                    {service.name_ar} — {service.name_en}
-                  </option>
-                ))}
+                {services
+                  .filter((s) => !s.parent_service_id)
+                  .map((service) => {
+                    const children = services.filter((c) => c.parent_service_id === service.id);
+                    if (!children.length) {
+                      return (
+                        <option key={service.id} value={service.id}>
+                          {service.name_ar} — {service.name_en}
+                        </option>
+                      );
+                    }
+                    return (
+                      <optgroup
+                        key={service.id}
+                        label={`${service.name_ar} — ${service.name_en}`}
+                      >
+                        {children.map((child) => (
+                          <option key={child.id} value={child.id}>
+                            {t("beforeAfter.fields.subTypeOption", { name: child.name_ar })} — {child.name_en}
+                          </option>
+                        ))}
+                      </optgroup>
+                    );
+                  })}
               </select>
             </AdminField>
             <AdminField label={t("beforeAfter.fields.beforeImage")}>

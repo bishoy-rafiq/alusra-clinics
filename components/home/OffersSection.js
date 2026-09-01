@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { getTranslations, getLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { CalendarClock, BadgePercent, ArrowLeft } from "lucide-react";
+import { CalendarClock, BadgePercent, ArrowLeft, ArrowRight } from "lucide-react";
 import SectionHeading from "@/components/ui/SectionHeading";
 import BookButton from "@/components/ui/BookButton";
 import { getOffers } from "@/lib/data";
@@ -15,6 +15,7 @@ export default async function OffersSection() {
   if (!offers?.length) return null;
 
   const isAr = locale === "ar";
+  const Arrow = isAr ? ArrowRight : ArrowLeft;
   const [featured, ...rest] = offers.slice(0, 3);
 
   const title = (o) => (isAr ? o.title_ar : o.title_en);
@@ -61,7 +62,13 @@ export default async function OffersSection() {
             </div>
 
             <div className="relative z-10 mt-auto flex flex-col gap-1.5 p-5 text-white md:p-7">
-              <h3 className="font-display text-2xl font-bold leading-snug md:text-3xl">{title(featured)}</h3>
+              <Link
+                href={`/offers/${featured.slug}`}
+                className="inline-flex items-start gap-2 underline-offset-4 transition-colors hover:text-brand-gold group-hover:underline"
+              >
+                <h3 className="font-display text-2xl font-bold leading-snug md:text-3xl">{title(featured)}</h3>
+                <Arrow size={22} className="mt-1 shrink-0 text-brand-gold" />
+              </Link>
               {desc(featured) && (
                 <p className="mt-1 line-clamp-3 whitespace-pre-line text-sm leading-relaxed text-white/85 md:text-base">
                   {desc(featured)}
@@ -69,6 +76,12 @@ export default async function OffersSection() {
               )}
               <div className="mt-4 flex flex-wrap items-center gap-4">
                 <BookButton name={title(featured)} kind="offer" label={t("bookCta")} variant="gold" className="w-full sm:w-auto" />
+                <Link
+                  href={`/offers/${featured.slug}`}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-white/40 bg-white/10 px-4 py-2.5 text-sm font-bold text-white backdrop-blur-md transition-colors hover:bg-white/20"
+                >
+                  {t("details")} <Arrow size={15} />
+                </Link>
                 {featured.valid_until && (
                   <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-white/80">
                     <CalendarClock size={15} className="text-brand-gold" />
@@ -112,7 +125,13 @@ export default async function OffersSection() {
                   )}
 
                   <div className="relative z-10 mt-auto flex flex-col gap-1.5 p-5 text-white md:p-6">
-                    <h4 className="font-display text-xl font-bold leading-snug md:text-2xl">{title(offer)}</h4>
+                    <Link
+                      href={`/offers/${offer.slug}`}
+                      className="inline-flex items-start gap-2 underline-offset-4 transition-colors hover:text-brand-gold group-hover:underline"
+                    >
+                      <h4 className="font-display text-xl font-bold leading-snug md:text-2xl">{title(offer)}</h4>
+                      <Arrow size={18} className="mt-1 shrink-0 text-brand-gold" />
+                    </Link>
                     {desc(offer) && (
                       <p className="mt-1 line-clamp-2 whitespace-pre-line text-sm leading-relaxed text-white/85">
                         {desc(offer)}
@@ -120,6 +139,12 @@ export default async function OffersSection() {
                     )}
                     <div className="mt-4 flex flex-wrap items-center gap-3">
                       <BookButton name={title(offer)} kind="offer" label={t("bookCta")} className="w-full sm:w-auto" />
+                      <Link
+                        href={`/offers/${offer.slug}`}
+                        className="inline-flex items-center gap-1.5 text-sm font-bold text-white/90 underline underline-offset-4 transition-colors hover:text-brand-gold"
+                      >
+                        {t("details")} <Arrow size={13} />
+                      </Link>
                       {offer.valid_until && (
                         <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-white/80">
                           <CalendarClock size={14} className="text-brand-gold" />

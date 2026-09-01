@@ -66,7 +66,10 @@
     "book": "احجز هذا العرض",
     "bookCta": "أطلب هذا العرض",
     "viewAll": "عرض كل العروض",
-    "validUntil": "ساري حتى"
+    "validUntil": "ساري حتى",
+    "backToOffers": "الرجوع للعروض",
+    "details": "عرض التفاصيل",
+    "moreOffers": "عروض أخرى"
   },
   "subscribe": {
     "eyebrow": "عروض حصرية",
@@ -114,7 +117,10 @@
     "dermatology": "قسم الجلدية",
     "allCategories": "الكل",
     "resultsTitle": "قبل وبعد",
-    "resultsAll": "عرض كل النتائج"
+    "resultsAll": "عرض كل النتائج",
+    "typesEyebrow": "أنواع الخدمة",
+    "typesTitle": "أنواع {name}",
+    "backToService": "العودة إلى {name}"
   },
   "beforeAfter": {
     "eyebrow": "النتائج تتحدث",
@@ -142,7 +148,9 @@
     "viewAll": "عرض جميع الأطباء",
     "book": "احجز موعداً",
     "empty": "سيتم إضافة أطبائنا هنا قريباً.",
-    "backToDoctors": "الرجوع لصفحة الأطباء"
+    "backToDoctors": "الرجوع لصفحة الأطباء",
+    "details": "عرض التفاصيل",
+    "moreDoctors": "أطباء آخرون"
   },
   "reviews": {
     "eyebrow": "آراء عملائنا",
@@ -424,7 +432,21 @@
         "visibility": "ظهور الخدمة",
         "visible": "مفعّلة وظاهرة في الموقع",
         "image": "صورة الخدمة (اختياري)"
-      }
+      },
+      "typesButton": "إدارة الأنواع",
+      "typesLabel": "إدارة أنواع {name}",
+      "typesDialogTitle": "الأنواع — {name}",
+      "typesDialogSubtitle": "إدارة الخدمات الفرعية (الأنواع) المتوفرة ضمن هذه الخدمة.",
+      "typesCountLabel": "نوع",
+      "typesAdd": "نوع جديد",
+      "typesEmptyTitle": "لا توجد أنواع بعد",
+      "typesEmptyDesc": "أضف النوع الأول عبر زر «نوع جديد».",
+      "typesCreateTitle": "نوع جديد",
+      "typesEditTitle": "تعديل النوع",
+      "typesCreateSubtitle": "أضف خدمة فرعية/نوع جديد ضمن هذه الخدمة.",
+      "typesEditSubtitle": "حدّث بيانات النوع ثم احفظ.",
+      "typesDeleteTitle": "حذف النوع",
+      "typesDeleteMessage": "هل أنت متأكد من حذف النوع «{name}»؟ لا يمكن التراجع عن هذا الإجراء."
     },
     "beforeAfter": {
       "search": "ابحث في الحالات...",
@@ -452,7 +474,8 @@
         "descAr": "الوصف (عربي)",
         "descEn": "Description (English)",
         "service": "الخدمة المرتبطة",
-        "serviceHint": "إن ربطت الحالة بخدمة، ستظهر أيضاً داخل صفحة الخدمة نفسها.",
+        "serviceHint": "إن ربطت الحالة بخدمة أو نوع خدمة، ستظهر أيضاً داخل صفحتها.",
+        "subTypeOption": "نوع: {name}",
         "noLink": "— بدون ربط (تظهر في الرئيسية فقط) —",
         "beforeImage": "صورة «قبل»",
         "afterImage": "صورة «بعد»",

@@ -64,3 +64,61 @@ export async function deleteService(formData) {
   revalidatePath("/[locale]", "layout");
   invalidateDataCache();
 }
+
+/* --------------------------------------------------------------------------
+   Service sub-types (sub-services): children of a service row in the same
+   table, identified by parent_service_id.
+   -------------------------------------------------------------------------- */
+function readServiceSubTypeForm(formData) {
+  return {
+    category: formData.get("category")?.toString() || "dentistry",
+    name_ar: formData.get("name_ar")?.toString() || "",
+    name_en: formData.get("name_en")?.toString() || "",
+    excerpt_ar: formData.get("excerpt_ar")?.toString() || "",
+    excerpt_en: formData.get("excerpt_en")?.toString() || "",
+    description_ar: formData.get("description_ar")?.toString() || "",
+    description_en: formData.get("description_en")?.toString() || "",
+    icon: formData.get("icon")?.toString() || "sparkles",
+    image_url: formData.get("image_url")?.toString() || null,
+    sort_order: Number(formData.get("sort_order")) || 0,
+    active: formData.get("active") === "on",
+    parent_service_id: formData.get("parent_service_id")?.toString() || null,
+  };
+}
+
+export async function createServiceSubType(formData) {
+  const supabase = await createClient();
+  const values = readServiceSubTypeForm(formData);
+  if (!values.parent_service_id) throw new Error("Missing parent service id");
+  const slug = `${slugify(values.name_en || values.name_ar)}-${Date.now().toString(36)}`;
+
+  const { error } = await supabase.from("services").insert({ ...values, slug });
+  if (error) throw new Error(error.message);
+
+  revalidatePath("/admin/services");
+  revalidatePath("/[locale]", "layout");
+  invalidateDataCache();
+}
+
+export async function updateServiceSubType(formData) {
+  const supabase = await createClient();
+  const values = readServiceSubTypeForm(formData);
+  const id = formData.get("id");
+
+  const { error } = await supabase.from("services").update(values).eq("id", id);
+  if (error) throw new Error(error.message);
+
+  revalidatePath("/admin/services");
+  revalidatePath("/[locale]", "layout");
+  invalidateDataCache();
+}
+
+export async function deleteServiceSubType(formData) {
+  const id = formData.get("id");
+  const supabase = await createClient();
+  await supabase.from("services").delete().eq("id", id);
+
+  revalidatePath("/admin/services");
+  revalidatePath("/[locale]", "layout");
+  invalidateDataCache();
+}

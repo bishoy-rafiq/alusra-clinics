@@ -30,7 +30,7 @@
     "ratingReviews": "patient reviews on Google",
     "followUs": "Follow us",
     "scroll": "Scroll",
-     "seeServices": "Explore our services",
+    "seeServices": "Explore our services",
     "seeOffers": "Explore our offers",
     "cardTitle": "Join our exclusive offers club",
     "cardText": "Subscribe for free and get special offers and discounts on WhatsApp — for dentistry & skin care.",
@@ -66,7 +66,10 @@
     "book": "Book this offer",
     "bookCta": "Claim this offer",
     "viewAll": "View all offers",
-    "validUntil": "Valid until"
+    "validUntil": "Valid until",
+    "backToOffers": "Back to offers",
+    "details": "View details",
+    "moreOffers": "More offers"
   },
   "subscribe": {
     "eyebrow": "Exclusive offers",
@@ -114,7 +117,10 @@
     "dermatology": "Dermatology",
     "allCategories": "All",
     "resultsTitle": "Before & After",
-    "resultsAll": "View all results"
+    "resultsAll": "View all results",
+    "typesEyebrow": "Service types",
+    "typesTitle": "Types of {name}",
+    "backToService": "Back to {name}"
   },
   "beforeAfter": {
     "eyebrow": "Results speak",
@@ -142,7 +148,9 @@
     "viewAll": "View all doctors",
     "book": "Book an appointment",
     "empty": "Our doctors will be added here soon.",
-    "backToDoctors": "Back to doctors"
+    "backToDoctors": "Back to doctors",
+    "details": "View details",
+    "moreDoctors": "More doctors"
   },
   "reviews": {
     "eyebrow": "What Patients Say",
@@ -424,7 +432,21 @@
         "visibility": "Service visibility",
         "visible": "Active and visible on the site",
         "image": "Service image (optional)"
-      }
+      },
+      "typesButton": "Manage types",
+      "typesLabel": "Manage types for {name}",
+      "typesDialogTitle": "Types — {name}",
+      "typesDialogSubtitle": "Manage the sub-services offered under this service.",
+      "typesCountLabel": "type",
+      "typesAdd": "New type",
+      "typesEmptyTitle": "No types yet",
+      "typesEmptyDesc": "Add the first type using the \"New type\" button.",
+      "typesCreateTitle": "New type",
+      "typesEditTitle": "Edit type",
+      "typesCreateSubtitle": "Add a new sub-service / type under this service.",
+      "typesEditSubtitle": "Update the type details and save.",
+      "typesDeleteTitle": "Delete type",
+      "typesDeleteMessage": "Are you sure you want to delete the type \"{name}\"? This cannot be undone."
     },
     "beforeAfter": {
       "search": "Search cases...",
@@ -452,7 +474,8 @@
         "descAr": "Description (Arabic)",
         "descEn": "Description (English)",
         "service": "Linked service",
-        "serviceHint": "If you link the case to a service, it also appears inside that service's page.",
+        "serviceHint": "If you link the case to a service or a service type, it also appears inside that page.",
+        "subTypeOption": "Type: {name}",
         "noLink": "— Not linked (shows on home page only) —",
         "beforeImage": "Before image",
         "afterImage": "After image",

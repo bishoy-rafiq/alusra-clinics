@@ -1,12 +1,13 @@
-import { getTranslations, getLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import BookButton from "@/components/ui/BookButton";
 import BeforeAfter from "@/components/ui/BeforeAfter";
-import { getServices, getServiceBySlug, getBeforeAfterCasesByService } from "@/lib/data";
+import ServiceCard from "@/components/ui/ServiceCard";
+import { getServices, getServiceBySlug, getBeforeAfterCasesByService, getServiceSubTypes } from "@/lib/data";
 import { getServiceImage } from "@/lib/service-image-map";
-import { serviceSchema, breadcrumbSchema, localizedAlternates, SITE_URL } from "@/lib/seo";
+import { serviceSchema, webPageSchema, breadcrumbSchema, localizedAlternates, SITE_URL } from "@/lib/seo";
 import { routing } from "@/i18n/routing";
 
 export async function generateStaticParams() {
@@ -41,6 +42,7 @@ export default async function ServiceDetailPage({ params }) {
   if (!service) notFound();
 
   const beforeAfterCases = await getBeforeAfterCasesByService(service);
+  const subTypes = await getServiceSubTypes({ serviceId: service.id, serviceSlug: service.slug });
   const baT = await getTranslations("beforeAfter");
   const excerpt = locale === "ar" ? service.excerpt_ar : service.excerpt_en;
   const name = locale === "ar" ? service.name_ar : service.name_en;
@@ -60,10 +62,18 @@ export default async function ServiceDetailPage({ params }) {
     { name: t("title"), url: `${SITE_URL}/${locale}/services` },
     { name, url: `${SITE_URL}/${locale}/services/${slug}` },
   ]);
+  const serviceWebPage = webPageSchema({
+    locale,
+    name,
+    description: excerpt || description,
+    url: `/${locale}/services/${slug}`,
+    mainEntityId: `${SITE_URL}/${locale}/services/${slug}#service`,
+  });
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceWebPage) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
 
       <section className="relative overflow-hidden">
@@ -97,6 +107,22 @@ export default async function ServiceDetailPage({ params }) {
             </div>
           </aside>
         </div>
+
+        {subTypes.length > 0 && (
+          <div className="container-brand mt-16 border-t border-brand-line pt-12">
+            <div className="flex flex-col items-center gap-2 text-center">
+              <p className="eyebrow mb-2">{t("typesEyebrow")}</p>
+              <h2 className="font-display text-2xl font-bold text-brand-ink md:text-3xl">
+                {t("typesTitle", { name })}
+              </h2>
+            </div>
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {subTypes.map((st) => (
+                <ServiceCard key={st.id} service={st} href={`/services/${slug}/${st.slug}`} />
+              ))}
+            </div>
+          </div>
+        )}
 
         {beforeAfterCases.length > 0 && (
           <div className="container-brand mt-16 border-t border-brand-line pt-12">

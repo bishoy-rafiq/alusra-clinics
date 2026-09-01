@@ -11,24 +11,36 @@ import DoctorsSection from "@/components/home/DoctorsSection";
 import ReviewsSection from "@/components/home/ReviewsSection";
 import ContactSection from "@/components/home/ContactSection";
 import FaqSection, { getFaqItems } from "@/components/home/FaqSection";
-import { localizedAlternates, faqSchema } from "@/lib/seo";
+import { localizedAlternates, faqSchema, webPageSchema, pageOpenGraph, SITE_URL, CLINIC_NAME, CLINIC_ABOUT } from "@/lib/seo";
 
 export async function generateMetadata({ params }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
+  const description = t("description");
   return {
     title: t("title"),
-    description: t("description"),
+    description,
     alternates: localizedAlternates("/", locale),
+    ...pageOpenGraph({ locale, title: t("title"), description, path: "/" }),
   };
 }
 
-export default async function HomePage() {
+export default async function HomePage({ params }) {
+  const { locale } = await params;
   const settings = await getSettings();
   const faqItems = await getFaqItems();
+  const homeSchema = webPageSchema({
+    locale,
+    name: CLINIC_NAME[locale] || CLINIC_NAME.en,
+    description: CLINIC_ABOUT[locale] || CLINIC_ABOUT.en,
+    url: `/${locale}`,
+    mainEntityId: `${SITE_URL}/#organization`,
+    speakable: true,
+  });
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homeSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(faqItems)) }} />
       <Hero settings={settings} />
       <TrustStrip />

@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { CalendarClock, BadgePercent } from "lucide-react";
+import { CalendarClock, BadgePercent, ArrowLeft, ArrowRight } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import BookButton from "@/components/ui/BookButton";
 import { formatDate } from "@/lib/format";
 
@@ -7,6 +8,7 @@ export default function OfferCard({ offer, locale, t, featured = false }) {
   const title = locale === "ar" ? offer.title_ar : offer.title_en;
   const description = locale === "ar" ? offer.description_ar : offer.description_en;
   const badge = locale === "ar" ? offer.badge_ar : offer.badge_en;
+  const Arrow = locale === "ar" ? ArrowRight : ArrowLeft;
 
   return (
     <div data-reveal="bottom" className="revealed group relative">
@@ -19,34 +21,36 @@ export default function OfferCard({ offer, locale, t, featured = false }) {
           </span>
         )}
 
-        <div className="relative aspect-[4/3] w-full overflow-hidden">
-          {offer.image_url ? (
-            <Image
-              src={offer.image_url}
-              alt={title}
-              fill
-              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-          ) : (
-            <div className="relative flex h-full w-full items-center justify-center bg-gradient-brand">
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(255,255,255,0.18),transparent_60%)]" />
-              <BadgePercent size={52} className="text-white/70" />
-            </div>
-          )}
-
-          <div className="absolute inset-0 bg-gradient-to-t from-brand-ink/85 via-brand-ink/25 to-transparent" />
-
-          <div className="absolute inset-x-4 bottom-4 flex items-end justify-between gap-3">
-            <h3 className="font-display text-xl font-bold leading-tight text-white md:text-2xl">{title}</h3>
-            {badge && (
-              <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-extrabold text-white backdrop-blur-md">
-                <BadgePercent size={12} className="text-brand-gold" />
-                {badge}
-              </span>
+        <Link href={`/offers/${offer.slug}`} className="group/img relative block">
+          <div className="relative aspect-[4/3] w-full overflow-hidden">
+            {offer.image_url ? (
+              <Image
+                src={offer.image_url}
+                alt={title}
+                fill
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            ) : (
+              <div className="relative flex h-full w-full items-center justify-center bg-gradient-brand">
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(255,255,255,0.18),transparent_60%)]" />
+                <BadgePercent size={52} className="text-white/70" />
+              </div>
             )}
+
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-ink/85 via-brand-ink/25 to-transparent" />
+
+            <div className="absolute inset-x-4 bottom-4 flex items-end justify-between gap-3">
+              <h3 className="font-display text-xl font-bold leading-tight text-white underline-offset-4 transition-colors group-hover/img:text-brand-gold group-hover/img:underline md:text-2xl">{title}</h3>
+              {badge && (
+                <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-extrabold text-white backdrop-blur-md">
+                  <BadgePercent size={12} className="text-brand-gold" />
+                  {badge}
+                </span>
+              )}
+            </div>
           </div>
-        </div>
+        </Link>
 
         <div className="flex flex-1 flex-col p-5 md:p-6">
           {description && (
@@ -61,6 +65,13 @@ export default function OfferCard({ offer, locale, t, featured = false }) {
               variant={featured ? "gold" : "whatsapp"}
               className="w-full"
             />
+            <Link
+              href={`/offers/${offer.slug}`}
+              className="btn mt-3 w-full border border-brand-teal/30 bg-brand-mist text-brand-teal hover:border-brand-teal hover:bg-brand-teal hover:text-white"
+            >
+              {t("details")}
+              <Arrow size={16} />
+            </Link>
           </div>
 
           {offer.valid_until ? (

@@ -39,6 +39,12 @@ create table if not exists services (
   updated_at timestamptz not null default now()
 );
 
+-- Sub-services (service types): a service row may be a child of another service.
+-- A NULL parent_service_id means top-level; non-NULL means a sub-service / type.
+-- Add the column BEFORE creating the index (the index references the column).
+alter table services add column if not exists parent_service_id uuid references services(id) on delete cascade;
+create index if not exists services_parent_service_id_idx on services (parent_service_id);
+
 -- ---------------------------------------------------------------------------
 -- offers
 -- ---------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-import { getServices } from "@/lib/data";
+import { getServices, getServiceSubTypes } from "@/lib/data";
 import { routing } from "@/i18n/routing";
 import { SITE_URL } from "@/lib/seo";
 import { getServiceImage } from "@/lib/service-image-map";
@@ -7,10 +7,20 @@ export default async function sitemap() {
   const services = await getServices();
 
   const staticPaths = ["", "/about", "/contact", "/services", "/doctors", "/offers"];
-  const servicePaths = services.map((s) => ({
-    path: `/services/${s.slug}`,
-    images: [{ loc: `${SITE_URL}${getServiceImage(s)}` }],
-  }));
+  const servicePaths = [];
+  for (const s of services) {
+    servicePaths.push({
+      path: `/services/${s.slug}`,
+      images: [{ loc: `${SITE_URL}${getServiceImage(s)}` }],
+    });
+    const subTypes = await getServiceSubTypes({ serviceId: s.id, serviceSlug: s.slug });
+    for (const st of subTypes) {
+      servicePaths.push({
+        path: `/services/${s.slug}/${st.slug}`,
+        images: [{ loc: `${SITE_URL}${getServiceImage(st)}` }],
+      });
+    }
+  }
 
   const allPaths = [...staticPaths.map((path) => ({ path })), ...servicePaths];
 

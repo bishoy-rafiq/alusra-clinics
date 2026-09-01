@@ -117,7 +117,9 @@ export default async function LocaleLayout({ children, params }) {
       <body className="antialiased">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema(locale, schemaSettings)) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema(locale, schemaSettings, { services })),
+          }}
         />
         <script
           type="application/ld+json"
