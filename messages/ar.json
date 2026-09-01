@@ -408,8 +408,8 @@
       "deleteTitle": "حذف الخدمة",
       "deleteMessage": "هل أنت متأكد من حذف خدمة «{name}»؟ لا يمكن التراجع عن هذا الإجراء.",
       "categories": {
-        "dentistry": "طب الأسنان",
-        "dermatology": "الجلدية"
+        "dentistry": "قسم الأسنان",
+        "dermatology": "قسم الجلدية"
       },
       "fields": {
         "nameAr": "الاسم (عربي)",
@@ -475,8 +475,8 @@
       "copied": "تم نسخ الروابط!",
       "noOffer": "أضف عرضاً أولاً ليظهر هنا.",
       "interests": {
-        "dentistry": "طب الأسنان",
-        "dermatology": "الأمراض الجلدية"
+        "dentistry": "قسم الأسنان",
+        "dermatology": "قسم الجلدية"
       },
       "emptyTitle": "لا يوجد مشتركون بعد",
       "emptyDesc": "عند تسجيل الزوار في نموذج الاشتراك (في البانر وصفحة العروض) ستظهر بياناتهم هنا وتصل أيضاً إلى Google Sheets.",

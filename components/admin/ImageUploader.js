@@ -21,12 +21,17 @@ export default function ImageUploader({ name, defaultValue, folder = "uploads" }
     try {
       const supabase = createClient();
       const path = `${folder}/${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
-      const { error: uploadError } = await supabase.storage.from("media").upload(path, file, { upsert: true });
-      if (uploadError) throw uploadError;
+      const { data: uploadData, error: uploadError } = await supabase.storage.from("media").upload(path, file, { upsert: true });
+      if (uploadError) {
+        console.error("IMG_UPLOAD_ERR:", JSON.stringify(uploadError));
+        setError(uploadError?.message || "uploadError");
+        return;
+      }
       const { data } = supabase.storage.from("media").getPublicUrl(path);
       setUrl(data.publicUrl);
-    } catch {
-      setError("uploadError");
+    } catch (err) {
+      console.error("IMG_UPLOAD_THREW:", err);
+      setError(err?.message || "uploadError");
     } finally {
       setUploading(false);
     }
@@ -54,7 +59,7 @@ export default function ImageUploader({ name, defaultValue, folder = "uploads" }
           <input type="file" accept="image/*" className="hidden" onChange={handleChange} disabled={uploading} />
         </label>
       )}
-      {error === "uploadError" && <p className="mt-2 text-xs font-medium text-red-600">{t("image.uploadError")}</p>}
+      {error && <p className="mt-2 text-xs font-medium text-red-600">{error === "uploadError" ? t("image.uploadError") : error}</p>}
     </div>
   );
 }
