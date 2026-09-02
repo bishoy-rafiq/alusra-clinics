@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { ImagePlus, Loader2, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { compressImage, isHighResImage } from "@/lib/imageCompress";
 
 export default function ImageUploader({ name, defaultValue, folder = "uploads" }) {
   const t = useTranslations("admin");
@@ -19,9 +20,10 @@ export default function ImageUploader({ name, defaultValue, folder = "uploads" }
     setError("");
 
     try {
+      const fileToUpload = isHighResImage(file) ? await compressImage(file) : file;
       const supabase = createClient();
-      const path = `${folder}/${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
-      const { data: uploadData, error: uploadError } = await supabase.storage.from("media").upload(path, file, { upsert: true });
+      const path = `${folder}/${Date.now()}-${fileToUpload.name.replace(/\s+/g, "-")}`;
+      const { data: uploadData, error: uploadError } = await supabase.storage.from("media").upload(path, fileToUpload, { upsert: true });
       if (uploadError) {
         console.error("IMG_UPLOAD_ERR:", JSON.stringify(uploadError));
         setError(uploadError?.message || "uploadError");

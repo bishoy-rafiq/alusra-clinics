@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { ImagePlus, Loader2, X, Images, CheckCircle2, AlertCircle, Save } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { compressImage, isHighResImage } from "@/lib/imageCompress";
 import { saveSectionImages } from "@/app/admin/(dashboard)/settings/actions";
 import AdminSectionCard from "@/components/admin/AdminSectionCard";
 
@@ -61,9 +62,10 @@ export default function SectionImagesManager({ aboutImages = [], contactImages =
     setUploading(target);
     setState(null);
     try {
+      const fileToUpload = isHighResImage(file) ? await compressImage(file) : file;
       const supabase = createClient();
-      const path = `sections/${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
-      const { error } = await supabase.storage.from("media").upload(path, file, { upsert: true });
+      const path = `sections/${Date.now()}-${fileToUpload.name.replace(/\s+/g, "-")}`;
+      const { error } = await supabase.storage.from("media").upload(path, fileToUpload, { upsert: true });
       if (error) throw error;
       const { data } = supabase.storage.from("media").getPublicUrl(path);
       if (target === "contact") setContact((c) => [...c, data.publicUrl]);
