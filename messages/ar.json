@@ -69,7 +69,14 @@
     "validUntil": "ساري حتى",
     "backToOffers": "الرجوع للعروض",
     "details": "عرض التفاصيل",
-    "moreOffers": "عروض أخرى"
+    "moreOffers": "عروض أخرى",
+    "openImage": "عرض الصورة كاملة",
+    "openImageHint": "اضغط لعرض الصورة كاملة",
+    "close": "إغلاق",
+    "zoomIn": "تكبير",
+    "zoomOut": "تصغير",
+    "resetZoom": "إعادة الضبط",
+    "openNewTab": "فتح في تبويب جديد"
   },
   "subscribe": {
     "eyebrow": "عروض حصرية",

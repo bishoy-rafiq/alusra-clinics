@@ -2,6 +2,7 @@ import Image from "next/image";
 import { CalendarClock, BadgePercent, ArrowLeft, ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import BookButton from "@/components/ui/BookButton";
+import ImageZoom from "@/components/ui/ImageZoom";
 import { formatDate } from "@/lib/format";
 
 export default function OfferCard({ offer, locale, t, featured = false }) {
@@ -29,13 +30,21 @@ export default function OfferCard({ offer, locale, t, featured = false }) {
                 alt={title}
                 fill
                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                className="object-cover transition-transform duration-700 group-hover/img:scale-110"
               />
             ) : (
               <div className="relative flex h-full w-full items-center justify-center bg-gradient-brand">
                 <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(255,255,255,0.18),transparent_60%)]" />
                 <BadgePercent size={52} className="text-white/70" />
               </div>
+            )}
+
+            {offer.image_url && (
+              <ImageZoom
+                src={offer.image_url}
+                alt={title}
+                className="absolute end-3 top-3 z-20 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-black/45 text-white backdrop-blur-md transition-all duration-300 hover:scale-110 hover:border-brand-gold hover:bg-brand-gold hover:text-brand-ink"
+              />
             )}
 
             <div className="absolute inset-0 bg-gradient-to-t from-brand-ink/85 via-brand-ink/25 to-transparent" />

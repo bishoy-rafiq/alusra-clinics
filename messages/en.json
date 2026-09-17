@@ -69,7 +69,14 @@
     "validUntil": "Valid until",
     "backToOffers": "Back to offers",
     "details": "View details",
-    "moreOffers": "More offers"
+    "moreOffers": "More offers",
+    "openImage": "View full image",
+    "openImageHint": "Click to view the full image",
+    "close": "Close",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "resetZoom": "Reset zoom",
+    "openNewTab": "Open in new tab"
   },
   "subscribe": {
     "eyebrow": "Exclusive offers",
