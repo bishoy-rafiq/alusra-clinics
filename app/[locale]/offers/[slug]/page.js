@@ -7,6 +7,7 @@ import BookButton from "@/components/ui/BookButton";
 import OfferCard from "@/components/ui/OfferCard";
 import OfferSubscribe from "@/components/OfferSubscribe";
 import ImageZoom from "@/components/ui/ImageZoom";
+import TrustStrip from "@/components/home/TrustStrip";
 import { getOffers, getOfferBySlug } from "@/lib/data";
 import { offerSchema, breadcrumbSchema, localizedAlternates, pageOpenGraph, webPageSchema, SITE_URL } from "@/lib/seo";
 import { routing } from "@/i18n/routing";
@@ -107,7 +108,7 @@ export default async function OfferDetailPage({ params }) {
             </div>
           </div>
 
-          <div>
+          <div className="rounded-[2rem] border border-white/15 bg-white/10 p-6 shadow-[var(--shadow-lifted)] backdrop-blur-md md:p-8">
             <Link
               href="/offers"
               className="group inline-flex items-center gap-2 text-sm font-bold text-white/90 transition-colors hover:text-white"
@@ -118,28 +119,24 @@ export default async function OfferDetailPage({ params }) {
 
             <div className="mt-5 flex flex-wrap items-center gap-3">
               {badge && (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/20 px-3.5 py-1.5 text-xs font-extrabold text-white backdrop-blur-md">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-gold/40 bg-brand-gold/20 px-3.5 py-1.5 text-xs font-extrabold text-white">
                   <BadgePercent size={12} className="text-brand-gold" />
                   {badge}
                 </span>
               )}
               {offer.valid_until && (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/20 px-3.5 py-1.5 text-xs font-extrabold text-white/95 backdrop-blur-md">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/10 px-3.5 py-1.5 text-xs font-extrabold text-white/95">
                   <CalendarClock size={12} className="text-brand-gold" />
                   {t("validUntil")} {formatDate(offer.valid_until, locale)}
                 </span>
               )}
             </div>
 
-            <h1 className="mt-4 font-display text-3xl font-extrabold text-white md:text-5xl">{title}</h1>
+            <h1 className="mt-4 font-display text-3xl font-extrabold leading-tight text-white md:text-5xl">{title}</h1>
 
-            <div className="mt-6 max-w-xl">
-              {description ? (
-                <p className="whitespace-pre-line text-base leading-relaxed text-white/90">{description}</p>
-              ) : (
-                <p className="text-base leading-relaxed text-white/90">{t("subtitle")}</p>
-              )}
-            </div>
+            <p className="mt-5 max-w-xl whitespace-pre-line text-base leading-relaxed text-white/90">
+              {description || t("subtitle")}
+            </p>
 
             <div className="mt-8 flex flex-wrap gap-4">
               <BookButton name={title} kind="offer" label={t("book")} className="min-w-56" />
@@ -154,46 +151,7 @@ export default async function OfferDetailPage({ params }) {
         </div>
       </section>
 
-      <section className="section-y">
-        <div className="container-brand">
-          <h2 className="font-display text-2xl font-bold text-brand-ink md:text-3xl">
-            {isAr ? "تفاصيل العرض" : "About this offer"}
-          </h2>
-          <p className="mt-4 max-w-3xl whitespace-pre-line text-base leading-relaxed text-brand-slate">
-            {description || t("subtitle")}
-          </p>
-
-          <div className="mt-8 grid gap-6 lg:grid-cols-3">
-            <div className="card-brand lg:col-span-2">
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <p className="font-display text-lg font-bold text-brand-ink">{title}</p>
-                {badge && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-gold-soft px-3 py-1.5 text-xs font-extrabold text-amber-700">
-                    <BadgePercent size={13} className="text-brand-gold" />
-                    {badge}
-                  </span>
-                )}
-              </div>
-              <div className="mt-6 max-w-sm">
-                <BookButton name={title} kind="offer" label={t("book")} className="w-full" />
-              </div>
-            </div>
-
-            <aside className="lg:col-span-1">
-              <div className="card-brand sticky top-28 space-y-5 p-7">
-                <p className="font-display text-lg font-bold leading-snug text-brand-ink">{title}</p>
-                {offer.valid_until && (
-                  <p className="inline-flex items-center gap-2 text-sm font-semibold text-brand-slate">
-                    <CalendarClock size={15} className="text-brand-gold" />
-                    {t("validUntil")} {formatDate(offer.valid_until, locale)}
-                  </p>
-                )}
-                <BookButton name={title} kind="offer" label={t("book")} className="w-full" />
-              </div>
-            </aside>
-          </div>
-        </div>
-      </section>
+      <TrustStrip />
 
       {related.length > 0 && (
         <section className="section-y border-t border-brand-line bg-brand-mist pt-12 md:pt-16">
