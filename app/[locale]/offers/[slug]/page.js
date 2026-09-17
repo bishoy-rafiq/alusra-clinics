@@ -74,14 +74,11 @@ export default async function OfferDetailPage({ params }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(offerWebPage) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
 
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-brand opacity-60" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(255,255,255,0.14),transparent_55%)]" />
-
-        <div className="container-brand relative grid gap-8 py-10 md:py-14 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-center">
+      <section className="relative overflow-hidden bg-mesh border-b border-brand-line/70">
+        <div className="container-brand relative grid gap-10 py-12 md:py-16 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-center">
           <div className="mx-auto w-full max-w-lg lg:mx-0">
-            <div className="relative overflow-hidden rounded-[2rem] border border-white/60 bg-brand-ink/95 shadow-[var(--shadow-lifted)]">
-              <div className="relative aspect-[3/4] max-h-[72vh] w-full">
+            <div className="relative overflow-hidden rounded-[2rem] border border-white bg-white p-2 shadow-card">
+              <div className="relative aspect-[3/4] max-h-[72vh] w-full overflow-hidden rounded-[1.6rem] bg-brand-mist">
                 {offer.image_url ? (
                   <ImageZoom src={offer.image_url} alt={title}>
                     <Image
@@ -93,8 +90,7 @@ export default async function OfferDetailPage({ params }) {
                       className="object-contain"
                     />
 
-                    <span className="pointer-events-none absolute inset-0" />
-                    <span className="pointer-events-none absolute bottom-4 left-1/2 inline-flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full border border-white/25 bg-black/40 px-4 py-2 text-xs font-extrabold text-white backdrop-blur-md transition-colors duration-300 group-hover/zoom:bg-black/60">
+                    <span className="pointer-events-none absolute bottom-4 left-1/2 inline-flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full border border-white/25 bg-brand-ink/70 px-4 py-2 text-xs font-extrabold text-white backdrop-blur-md transition-colors duration-300 group-hover/zoom:bg-brand-ink/90">
                       <ZoomIn size={14} className="text-brand-gold" />
                       {t("openImageHint")}
                     </span>
@@ -108,10 +104,10 @@ export default async function OfferDetailPage({ params }) {
             </div>
           </div>
 
-          <div className="rounded-[2rem] border border-white/15 bg-white/10 p-6 shadow-[var(--shadow-lifted)] backdrop-blur-md md:p-8">
+          <div>
             <Link
               href="/offers"
-              className="group inline-flex items-center gap-2 text-sm font-bold text-white/90 transition-colors hover:text-white"
+              className="group inline-flex items-center gap-2 text-sm font-bold text-brand-teal transition-colors hover:text-brand-aqua"
             >
               <BackIcon size={16} className="transition-transform group-hover:-translate-x-1" />
               {t("backToOffers")}
@@ -119,22 +115,22 @@ export default async function OfferDetailPage({ params }) {
 
             <div className="mt-5 flex flex-wrap items-center gap-3">
               {badge && (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-gold/40 bg-brand-gold/20 px-3.5 py-1.5 text-xs font-extrabold text-white">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-gold-soft px-3.5 py-1.5 text-xs font-extrabold text-amber-700">
                   <BadgePercent size={12} className="text-brand-gold" />
                   {badge}
                 </span>
               )}
               {offer.valid_until && (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/10 px-3.5 py-1.5 text-xs font-extrabold text-white/95">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-mist px-3.5 py-1.5 text-xs font-extrabold text-brand-slate">
                   <CalendarClock size={12} className="text-brand-gold" />
                   {t("validUntil")} {formatDate(offer.valid_until, locale)}
                 </span>
               )}
             </div>
 
-            <h1 className="mt-4 font-display text-3xl font-extrabold leading-tight text-white md:text-5xl">{title}</h1>
+            <h1 className="mt-4 font-display text-3xl font-extrabold leading-tight text-brand-ink md:text-5xl">{title}</h1>
 
-            <p className="mt-5 max-w-xl whitespace-pre-line text-base leading-relaxed text-white/90">
+            <p className="mt-5 max-w-xl whitespace-pre-line text-base leading-relaxed text-brand-slate">
               {description || t("subtitle")}
             </p>
 
@@ -142,7 +138,7 @@ export default async function OfferDetailPage({ params }) {
               <BookButton name={title} kind="offer" label={t("book")} className="min-w-56" />
               <Link
                 href="/offers"
-                className="btn border border-white/30 bg-white/10 text-white backdrop-blur-md hover:border-white hover:bg-white hover:text-brand-ink"
+                className="btn border border-brand-teal/30 bg-brand-mist text-brand-teal hover:border-brand-teal hover:bg-brand-teal hover:text-white"
               >
                 {t("viewAll")}
               </Link>
