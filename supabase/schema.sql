@@ -58,6 +58,7 @@ create table if not exists offers (
   badge_ar text,
   badge_en text,
   image_url text,
+  images jsonb,
   discount_label text,
   valid_until date,
   related_service_id uuid references services(id) on delete set null,
@@ -66,6 +67,8 @@ create table if not exists offers (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table offers add column if not exists images jsonb;
 
 -- ---------------------------------------------------------------------------
 -- doctors

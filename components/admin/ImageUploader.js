@@ -4,8 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { ImagePlus, Loader2, X } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
-import { compressImage } from "@/lib/imageCompress";
+import { uploadImageToStorage } from "@/lib/uploadImage";
 
 export default function ImageUploader({ name, defaultValue, folder = "uploads" }) {
   const t = useTranslations("admin");
@@ -20,17 +19,8 @@ export default function ImageUploader({ name, defaultValue, folder = "uploads" }
     setError("");
 
     try {
-      const fileToUpload = await compressImage(file);
-      const supabase = createClient();
-      const path = `${folder}/${Date.now()}-${fileToUpload.name.replace(/\s+/g, "-")}`;
-      const { data: uploadData, error: uploadError } = await supabase.storage.from("media").upload(path, fileToUpload, { upsert: true });
-      if (uploadError) {
-        console.error("IMG_UPLOAD_ERR:", JSON.stringify(uploadError));
-        setError(uploadError?.message || "uploadError");
-        return;
-      }
-      const { data } = supabase.storage.from("media").getPublicUrl(path);
-      setUrl(data.publicUrl);
+      const publicUrl = await uploadImageToStorage(file, folder);
+      setUrl(publicUrl);
     } catch (err) {
       console.error("IMG_UPLOAD_THREW:", err);
       setError(err?.message || "uploadError");

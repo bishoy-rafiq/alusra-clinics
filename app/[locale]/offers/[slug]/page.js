@@ -1,14 +1,14 @@
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import { CalendarClock, BadgePercent, ArrowLeft, ArrowRight, ZoomIn } from "lucide-react";
+import { CalendarClock, BadgePercent, ArrowLeft, ArrowRight } from "lucide-react";
 import BookButton from "@/components/ui/BookButton";
 import OfferCard from "@/components/ui/OfferCard";
 import OfferSubscribe from "@/components/OfferSubscribe";
-import ImageZoom from "@/components/ui/ImageZoom";
+import OfferGallery from "@/components/ui/OfferGallery";
 import TrustStrip from "@/components/home/TrustStrip";
 import { getOffers, getOfferBySlug } from "@/lib/data";
+import { offerImages, offerCover } from "@/lib/offerImages";
 import { offerSchema, breadcrumbSchema, localizedAlternates, pageOpenGraph, webPageSchema, SITE_URL } from "@/lib/seo";
 import { routing } from "@/i18n/routing";
 import { formatDate } from "@/lib/format";
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }) {
       title: name,
       description,
       path: `/offers/${slug}`,
-      image: offer.image_url || "/images/logo.png",
+      image: offerCover(offer) || "/images/logo.png",
     }),
   };
 }
@@ -48,6 +48,7 @@ export default async function OfferDetailPage({ params }) {
   const title = isAr ? offer.title_ar : offer.title_en;
   const description = isAr ? offer.description_ar : offer.description_en;
   const badge = isAr ? offer.badge_ar : offer.badge_en;
+  const images = offerImages(offer);
   const allOffers = await getOffers({ activeOnly: true });
   const related = allOffers.filter((o) => o.id !== offer.id).slice(0, 3);
 
@@ -78,29 +79,13 @@ export default async function OfferDetailPage({ params }) {
         <div className="container-brand relative grid gap-10 py-12 md:py-16 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-center">
           <div className="mx-auto w-full max-w-lg lg:mx-0">
             <div className="relative overflow-hidden rounded-[2rem] border border-white bg-white p-2 shadow-card">
-              <div className="relative aspect-[3/4] max-h-[72vh] w-full overflow-hidden rounded-[1.6rem] bg-brand-mist">
-                {offer.image_url ? (
-                  <ImageZoom src={offer.image_url} alt={title}>
-                    <Image
-                      src={offer.image_url}
-                      alt={title}
-                      fill
-                      priority
-                      sizes="(min-width: 1024px) 45vw, 90vw"
-                      className="object-contain"
-                    />
-
-                    <span className="pointer-events-none absolute bottom-4 left-1/2 inline-flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full border border-white/25 bg-brand-ink/70 px-4 py-2 text-xs font-extrabold text-white backdrop-blur-md transition-colors duration-300 group-hover/zoom:bg-brand-ink/90">
-                      <ZoomIn size={14} className="text-brand-gold" />
-                      {t("openImageHint")}
-                    </span>
-                  </ImageZoom>
-                ) : (
-                  <div className="relative flex h-full w-full items-center justify-center bg-gradient-brand">
-                    <BadgePercent size={72} className="text-white/70" />
-                  </div>
-                )}
-              </div>
+              {images.length ? (
+                <OfferGallery images={images} alt={title} />
+              ) : (
+                <div className="relative flex aspect-[3/4] max-h-[72vh] w-full items-center justify-center overflow-hidden rounded-[1.6rem] bg-gradient-brand">
+                  <BadgePercent size={72} className="text-white/70" />
+                </div>
+              )}
             </div>
           </div>
 

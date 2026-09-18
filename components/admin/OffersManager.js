@@ -9,7 +9,8 @@ import ConfirmDialog from "./ConfirmDialog";
 import AdminField from "./AdminField";
 import StatusBadge from "./StatusBadge";
 import SearchBox from "./SearchBox";
-import ImageUploader from "./ImageUploader";
+import MultiImageUploader from "./MultiImageUploader";
+import { offerImages } from "@/lib/offerImages";
 import { formatDate } from "@/lib/format";
 import { createOffer, updateOffer, deleteOffer } from "@/app/admin/(dashboard)/offers/actions";
 
@@ -190,8 +191,8 @@ export default function OffersManager({ items }) {
                 {t("offers.fields.visible")}
               </label>
             </AdminField>
-            <AdminField label={t("offers.fields.image")} className="sm:col-span-2">
-              <ImageUploader name="image_url" defaultValue={editing?.image_url} folder="offers" />
+            <AdminField label={t("offers.fields.images")} hint={t("offers.fields.imagesHint")} className="sm:col-span-2">
+              <MultiImageUploader defaultImages={offerImages(editing)} folder="offers" />
             </AdminField>
           </div>
 

@@ -76,7 +76,11 @@
     "zoomIn": "تكبير",
     "zoomOut": "تصغير",
     "resetZoom": "إعادة الضبط",
-    "openNewTab": "فتح في تبويب جديد"
+    "openNewTab": "فتح في تبويب جديد",
+    "prevImage": "الصورة السابقة",
+    "nextImage": "الصورة التالية",
+    "coverBadge": "الغلاف",
+    "openImageIndex": "عرض الصورة {index}"
   },
   "subscribe": {
     "eyebrow": "عروض حصرية",
@@ -334,7 +338,12 @@
     "image": {
       "upload": "رفع صورة",
       "uploading": "جاري الرفع...",
-      "uploadError": "تعذّر رفع الصورة. تأكد من إعداد Supabase Storage (bucket: media)."
+      "uploadError": "تعذّر رفع الصورة. تأكد من إعداد Supabase Storage (bucket: media).",
+      "addMore": "إضافة صورة",
+      "removeImage": "إزالة الصورة",
+      "moveUp": "تقديم الصورة",
+      "moveDown": "تأجيل الصورة",
+      "coverBadge": "الغلاف"
     },
     "offers": {
       "search": "ابحث في العروض...",
@@ -360,7 +369,9 @@
         "validUntil": "ساري حتى (اختياري)",
         "visibility": "ظهور العرض",
         "visible": "مفعّل وظاهر في الموقع",
-        "image": "صورة العرض (اختياري)"
+        "image": "صورة العرض (اختياري)",
+        "images": "صور العرض",
+        "imagesHint": "أضف صورة أو أكثر. الصورة الأولى هي صورة الغلاف."
       }
     },
     "doctors": {

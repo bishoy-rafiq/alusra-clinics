@@ -21,18 +21,43 @@ function readOfferForm(formData) {
     description_en: formData.get("description_en")?.toString() || "",
     badge_ar: formData.get("badge_ar")?.toString() || "",
     badge_en: formData.get("badge_en")?.toString() || "",
-    image_url: formData.get("image_url")?.toString() || null,
     valid_until: formData.get("valid_until")?.toString() || null,
     active: formData.get("active") === "on",
   };
+}
+
+function parseImages(formData) {
+  const raw = formData.get("images")?.toString() || "";
+  try {
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) return parsed.filter((x) => typeof x === "string" && x.trim());
+  } catch {
+    // fall through to empty
+  }
+  return [];
+}
+
+async function offersImagesColumnAvailable(supabase) {
+  const { error } = await supabase.from("offers").select("images").limit(1);
+  return !error;
 }
 
 export async function createOffer(formData) {
   const supabase = await createClient();
   const values = readOfferForm(formData);
   const slug = `${slugify(values.title_en || values.title_ar)}-${Date.now().toString(36)}`;
+  const images = parseImages(formData);
+  const cover = images[0] || null;
 
-  const { error } = await supabase.from("offers").insert({ ...values, slug });
+  const hasColumn = await offersImagesColumnAvailable(supabase);
+  const payload = {
+    ...values,
+    slug,
+    image_url: cover,
+    ...(hasColumn ? { images } : { image_url: images.length > 1 ? JSON.stringify(images) : cover }),
+  };
+
+  const { error } = await supabase.from("offers").insert(payload);
   if (error) throw new Error(error.message);
 
   revalidatePath("/admin/offers");
@@ -44,8 +69,17 @@ export async function updateOffer(formData) {
   const supabase = await createClient();
   const values = readOfferForm(formData);
   const id = formData.get("id");
+  const images = parseImages(formData);
+  const cover = images[0] || null;
 
-  const { error } = await supabase.from("offers").update(values).eq("id", id);
+  const hasColumn = await offersImagesColumnAvailable(supabase);
+  const payload = {
+    ...values,
+    image_url: cover,
+    ...(hasColumn ? { images } : { image_url: images.length > 1 ? JSON.stringify(images) : cover }),
+  };
+
+  const { error } = await supabase.from("offers").update(payload).eq("id", id);
   if (error) throw new Error(error.message);
 
   revalidatePath("/admin/offers");

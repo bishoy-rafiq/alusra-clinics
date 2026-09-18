@@ -76,7 +76,11 @@
     "zoomIn": "Zoom in",
     "zoomOut": "Zoom out",
     "resetZoom": "Reset zoom",
-    "openNewTab": "Open in new tab"
+    "openNewTab": "Open in new tab",
+    "prevImage": "Previous image",
+    "nextImage": "Next image",
+    "coverBadge": "Cover",
+    "openImageIndex": "View image {index}"
   },
   "subscribe": {
     "eyebrow": "Exclusive offers",
@@ -334,7 +338,12 @@
     "image": {
       "upload": "Upload image",
       "uploading": "Uploading...",
-      "uploadError": "Could not upload the image. Make sure Supabase Storage is set up (bucket: media)."
+      "uploadError": "Could not upload the image. Make sure Supabase Storage is set up (bucket: media).",
+      "addMore": "Add image",
+      "removeImage": "Remove image",
+      "moveUp": "Move earlier",
+      "moveDown": "Move later",
+      "coverBadge": "Cover"
     },
     "offers": {
       "search": "Search offers...",
@@ -360,7 +369,9 @@
         "validUntil": "Valid until (optional)",
         "visibility": "Offer visibility",
         "visible": "Active and visible on the site",
-        "image": "Offer image (optional)"
+        "image": "Offer image (optional)",
+        "images": "Offer images",
+        "imagesHint": "Add one or more images. The first image is the cover."
       }
     },
     "doctors": {

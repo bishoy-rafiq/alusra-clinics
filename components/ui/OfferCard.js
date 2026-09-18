@@ -1,15 +1,18 @@
 import Image from "next/image";
-import { CalendarClock, BadgePercent, ArrowLeft, ArrowRight } from "lucide-react";
+import { CalendarClock, BadgePercent, ArrowLeft, ArrowRight, Images } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import BookButton from "@/components/ui/BookButton";
 import ImageZoom from "@/components/ui/ImageZoom";
 import { formatDate } from "@/lib/format";
+import { offerCover, offerImages } from "@/lib/offerImages";
 
 export default function OfferCard({ offer, locale, t, featured = false }) {
   const title = locale === "ar" ? offer.title_ar : offer.title_en;
   const description = locale === "ar" ? offer.description_ar : offer.description_en;
   const badge = locale === "ar" ? offer.badge_ar : offer.badge_en;
   const Arrow = locale === "ar" ? ArrowRight : ArrowLeft;
+  const cover = offerCover(offer);
+  const imageCount = offerImages(offer).length;
 
   return (
     <div data-reveal="bottom" className="revealed group relative">
@@ -24,9 +27,9 @@ export default function OfferCard({ offer, locale, t, featured = false }) {
 
         <Link href={`/offers/${offer.slug}`} className="group/img relative block">
           <div className="relative aspect-[4/3] w-full overflow-hidden">
-            {offer.image_url ? (
+            {cover ? (
               <Image
-                src={offer.image_url}
+                src={cover}
                 alt={title}
                 fill
                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
@@ -39,15 +42,21 @@ export default function OfferCard({ offer, locale, t, featured = false }) {
               </div>
             )}
 
-            {offer.image_url && (
+            {cover && (
               <ImageZoom
-                src={offer.image_url}
+                src={cover}
                 alt={title}
                 className="absolute end-3 top-3 z-20 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-black/45 text-white backdrop-blur-md transition-all duration-300 hover:scale-110 hover:border-brand-gold hover:bg-brand-gold hover:text-brand-ink"
               />
             )}
 
             <div className="absolute inset-0 bg-gradient-to-t from-brand-ink/85 via-brand-ink/25 to-transparent" />
+
+            {imageCount > 1 && (
+              <span className="absolute bottom-3 start-3 z-20 inline-flex items-center gap-1 rounded-full border border-white/30 bg-black/45 px-2.5 py-1 text-[10px] font-extrabold text-white backdrop-blur-md">
+                <Images size={11} className="text-brand-gold" /> {imageCount}
+              </span>
+            )}
 
             <div className="absolute inset-x-4 bottom-4 flex items-end justify-between gap-3">
               <h3 className="font-display text-xl font-bold leading-tight text-white underline-offset-4 transition-colors group-hover/img:text-brand-gold group-hover/img:underline md:text-2xl">{title}</h3>
